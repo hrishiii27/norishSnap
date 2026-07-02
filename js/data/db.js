@@ -74,33 +74,37 @@ function generateUUID() {
 }
 
 /** Get or create a local user (syncs to Supabase if available) */
-export async function getOrCreateLocalUser() {
-  const defaultEmail = 'local@nourishsnap.app';
+export async function getOrCreateLocalUser(authUser = null) {
+  const email = authUser ? authUser.email : 'local@nourishsnap.app';
   
   if (supabase) {
     const { data: existingUser } = await supabase
       .from('users')
       .select('*')
-      .eq('email', defaultEmail)
+      .eq('email', email)
       .single();
       
     if (existingUser) return existingUser;
 
     const newUser = {
-      email: defaultEmail,
+      id: authUser ? authUser.id : undefined, // Let supabase generate if undefined, but usually we map auth.uid -> public.users.id
+      email: email,
       daily_calorie_target: 2000,
       protein_target_g: 120,
       carbs_target_g: 200,
       fats_target_g: 60,
     };
     
-    const { data: insertedUser, error } = await supabase
-      .from('users')
-      .insert(newUser)
-      .select()
-      .single();
-      
-    if (!error && insertedUser) return insertedUser;
+    // Some setups use a trigger for auth.users to public.users, but we can try to insert
+    try {
+      const { data: insertedUser, error } = await supabase
+        .from('users')
+        .upsert(newUser)
+        .select()
+        .single();
+        
+      if (!error && insertedUser) return insertedUser;
+    } catch(e) {}
   }
 
   // Fallback to IndexedDB

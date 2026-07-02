@@ -1,3 +1,4 @@
+@import url('./landing.css');
 /* ═══════════════════════════════════════════════════════════════
    NourishSnap AI — Complete Design System
    Botanical, Minimalist, Organic Design Language
@@ -928,4 +929,62 @@ body {
     justify-content: center;
     background: #F0EDE8;
   }
+}
+
+/* ═══════════════════════════════════════════════
+   CAMERA PLACEHOLDER & ACTIONS
+   ═══════════════════════════════════════════════ */
+
+.camera-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--surface-default);
+  z-index: 5;
+}
+
+.camera-placeholder-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--deep-bark);
+  margin-bottom: 24px;
+}
+
+.camera-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 80%;
+  max-width: 240px;
+}
+
+.action-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 24px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  background-color: var(--botanical-sage);
+  color: #fff;
+  transition: all 0.2s ease;
+}
+
+.action-btn.secondary {
+  background-color: var(--surface-default);
+  color: var(--botanical-sage);
+  border: 1px solid var(--border-subtle);
+}
+
+.action-btn:active {
+  transform: scale(0.98);
 }

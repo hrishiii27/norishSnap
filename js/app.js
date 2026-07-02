@@ -22,6 +22,7 @@ import {
   getTodayMeals,
   getTodayTotals,
 } from './data/db.js';
+import { getSession, signInWithGoogle, signInWithApple, onAuthStateChange, signOut } from './auth/auth.js';
 
 // ── App State ──
 const state = {
@@ -34,6 +35,18 @@ const state = {
 
 // ── DOM References ──
 const dom = {
+  // Routing
+  landingView:      document.getElementById('landing-view'),
+  appView:          document.getElementById('app-view'),
+  btnGoogle:        document.getElementById('btn-login-google'),
+  btnApple:         document.getElementById('btn-login-apple'),
+  
+  // Camera & Placeholder
+  cameraPlaceholder: document.getElementById('camera-placeholder'),
+  btnStartCamera:    document.getElementById('btn-start-camera'),
+  galleryInput:      document.getElementById('gallery-upload-input'),
+  cameraStream:      document.getElementById('camera-stream'),
+
   shutterBtn:       document.getElementById('shutter-btn'),
   controlsBar:      document.getElementById('controls-bar'),
   retakeBar:        document.getElementById('retake-bar'),
@@ -71,20 +84,21 @@ const dom = {
 const camera = new Camera();
 
 async function init() {
-  // Load user
-  state.user = await getOrCreateLocalUser();
+  // Check auth session
+  const session = await getSession();
+  if (session) {
+    await enterApp(session.user);
+  } else {
+    showLanding();
+  }
 
-  // Get ambient context
-  state.context = await getAmbientContext();
-  dom.contextIcon.textContent = state.context.icon;
-  dom.contextLabel.textContent = state.context.mealContext;
-
-  // Start camera
-  await camera.start();
-
-  // Set up file input fallback
-  camera.onFileSelected(async (file) => {
-    await processImage(file);
+  // Listen for auth state changes
+  onAuthStateChange(async (event, session) => {
+    if (session && event === 'SIGNED_IN') {
+      await enterApp(session.user);
+    } else if (event === 'SIGNED_OUT') {
+      showLanding();
+    }
   });
 
   // Bind events
@@ -94,27 +108,78 @@ async function init() {
   registerSW();
 }
 
+function showLanding() {
+  dom.landingView.classList.remove('hidden');
+  dom.appView.classList.add('hidden');
+}
+
+async function enterApp(user) {
+  dom.landingView.classList.add('hidden');
+  dom.appView.classList.remove('hidden');
+  
+  // Sync local/Supabase user data
+  state.user = await getOrCreateLocalUser(user);
+
+  // Get ambient context
+  state.context = await getAmbientContext();
+  if (dom.contextIcon && dom.contextLabel) {
+    dom.contextIcon.textContent = state.context.icon;
+    dom.contextLabel.textContent = state.context.mealContext;
+  }
+}
+
 function bindEvents() {
-  // Shutter button
-  dom.shutterBtn.addEventListener('click', handleShutter);
+  // Auth
+  if (dom.btnGoogle) dom.btnGoogle.addEventListener('click', signInWithGoogle);
+  if (dom.btnApple) dom.btnApple.addEventListener('click', signInWithApple);
 
-  // Retake
-  dom.retakeBtn.addEventListener('click', handleRetake);
+  // Camera Toggle
+  if (dom.btnStartCamera) {
+    dom.btnStartCamera.addEventListener('click', async () => {
+      dom.cameraPlaceholder.classList.add('hidden');
+      dom.cameraStream.classList.remove('hidden');
+      await camera.start();
+    });
+  }
 
-  // Log meal
-  dom.logMealBtn.addEventListener('click', handleLogMeal);
+  // Gallery Upload
+  if (dom.galleryInput) {
+    dom.galleryInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        dom.cameraPlaceholder.classList.add('hidden');
+        await processImage(file);
+      }
+    });
+  }
 
-  // History
-  dom.historyBtn.addEventListener('click', () => showHistory());
-  dom.historyCloseBtn.addEventListener('click', () => hideHistory());
-
-  // Backdrop dismiss
-  dom.backdrop.addEventListener('click', () => {
-    hideAnalyticsPanel();
+  // File fallback in camera (if any exists)
+  camera.onFileSelected(async (file) => {
+    await processImage(file);
   });
 
+  // Shutter button
+  if (dom.shutterBtn) dom.shutterBtn.addEventListener('click', handleShutter);
+
+  // Retake
+  if (dom.retakeBtn) dom.retakeBtn.addEventListener('click', handleRetake);
+
+  // Log meal
+  if (dom.logMealBtn) dom.logMealBtn.addEventListener('click', handleLogMeal);
+
+  // History
+  if (dom.historyBtn) dom.historyBtn.addEventListener('click', () => showHistory());
+  if (dom.historyCloseBtn) dom.historyCloseBtn.addEventListener('click', () => hideHistory());
+
+  // Backdrop dismiss
+  if (dom.backdrop) {
+    dom.backdrop.addEventListener('click', () => {
+      hideAnalyticsPanel();
+    });
+  }
+
   // Shadow oil edit
-  dom.shadowOilEditBtn.addEventListener('click', handleShadowOilEdit);
+  if (dom.shadowOilEditBtn) dom.shadowOilEditBtn.addEventListener('click', handleShadowOilEdit);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -180,7 +245,14 @@ async function processImage(input) {
 }
 
 function handleRetake() {
-  camera.resume();
+  if (!dom.cameraStream.classList.contains('hidden')) {
+    camera.resume();
+  } else {
+    // If we used gallery, revert to placeholder
+    dom.cameraPlaceholder.classList.remove('hidden');
+    dom.galleryInput.value = '';
+  }
+  
   dom.controlsBar.classList.remove('hidden');
   dom.retakeBar.classList.add('hidden');
   hideAnalyticsPanel();
@@ -458,6 +530,18 @@ async function showHistory() {
       dom.historyList.appendChild(card);
     });
   }
+  
+  // Add Logout button in history drawer
+  const logoutBtn = document.createElement('button');
+  logoutBtn.className = 'auth-btn secondary';
+  logoutBtn.style.marginTop = '24px';
+  logoutBtn.style.color = 'var(--text-secondary)';
+  logoutBtn.textContent = 'Log Out';
+  logoutBtn.onclick = () => {
+    signOut();
+    hideHistory();
+  };
+  dom.historyList.appendChild(logoutBtn);
 
   dom.historyDrawer.classList.remove('hidden');
   void dom.historyDrawer.offsetHeight;
