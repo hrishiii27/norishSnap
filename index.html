@@ -64,10 +64,32 @@
           <button id="btn-start-camera" class="action-btn">
             Open Camera
           </button>
+          
+          <button id="btn-audio-snap" class="action-btn audio-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="23"/>
+              <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+            Voice Log (Audio Snap)
+          </button>
+
           <label for="gallery-upload-input" class="action-btn secondary">
             Upload from Gallery
           </label>
           <input type="file" id="gallery-upload-input" accept="image/*" class="hidden">
+        </div>
+      </div>
+
+      <!-- Listening Overlay for Audio Snap -->
+      <div id="listening-overlay" class="processing-overlay hidden">
+        <div class="processing-spinner">
+          <svg class="audio-waves" viewBox="0 0 24 24" fill="none" stroke="var(--botanical-sage)" stroke-width="2">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          </svg>
+          <span class="processing-text" id="listening-text">Listening...</span>
         </div>
       </div>
 
@@ -178,6 +200,17 @@
         <span class="shadow-oil-icon">🫒</span>
         <span id="shadow-oil-text" class="shadow-oil-text">Assumed 1.5 tbsp Ghee/Oil used. Tap to alter.</span>
         <button id="shadow-oil-edit-btn" class="shadow-oil-edit-btn" aria-label="Edit cooking fat">✎</button>
+      </div>
+
+      <!-- Thali Share Mode -->
+      <div id="thali-share-mode" class="thali-share-container">
+        <span class="thali-share-label">Shared this meal? (Thali Mode)</span>
+        <div class="thali-share-options">
+          <button class="thali-share-btn active" data-fraction="1">Just Me (1x)</button>
+          <button class="thali-share-btn" data-fraction="0.5">Shared 1/2</button>
+          <button class="thali-share-btn" data-fraction="0.333">Shared 1/3</button>
+          <button class="thali-share-btn" data-fraction="0.25">Shared 1/4</button>
+        </div>
       </div>
 
       <!-- Log meal button -->

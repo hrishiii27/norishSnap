@@ -8,6 +8,7 @@ import { compressImage } from './utils/image-compress.js';
 import { getAmbientContext } from './utils/context-guesser.js';
 import { formatWeight } from './utils/unit-converter.js';
 import { analyzeImage } from './agents/vision-parser.js';
+import { analyzeTranscript } from './agents/audio-parser.js';
 import { enrichWithNutrition } from './agents/database-retriever.js';
 import {
   applyRevisionMemory,
@@ -21,6 +22,8 @@ import {
   logMeal,
   getTodayMeals,
   getTodayTotals,
+  updateMealEnergy,
+  subtractLeftovers,
 } from './data/db.js';
 import { getSession, signInWithGoogle, signInWithApple, onAuthStateChange, signOut } from './auth/auth.js';
 
@@ -31,6 +34,8 @@ const state = {
   currentItems: [],          // Food items from current analysis
   capturedImageUrl: null,    // Data URL of captured image
   isProcessing: false,
+  leftoverTargetMealId: null, // If set, next photo is treated as a leftover subtraction
+  shareFraction: 1.0         // Household Meal Share (Thali Mode) multiplier
 };
 
 // ── DOM References ──
@@ -44,8 +49,12 @@ const dom = {
   // Camera & Placeholder
   cameraPlaceholder: document.getElementById('camera-placeholder'),
   btnStartCamera:    document.getElementById('btn-start-camera'),
+  btnAudioSnap:      document.getElementById('btn-audio-snap'),
   galleryInput:      document.getElementById('gallery-upload-input'),
   cameraStream:      document.getElementById('camera-stream'),
+
+  listeningOverlay: document.getElementById('listening-overlay'),
+  listeningText:    document.getElementById('listening-text'),
 
   shutterBtn:       document.getElementById('shutter-btn'),
   controlsBar:      document.getElementById('controls-bar'),
@@ -56,6 +65,10 @@ const dom = {
   backdrop:         document.getElementById('backdrop'),
   foodItemsList:    document.getElementById('food-items-list'),
   logMealBtn:       document.getElementById('log-meal-btn'),
+
+  // Thali Share Mode
+  thaliShareBtns:   document.querySelectorAll('.thali-share-btn'),
+
   shadowOilPrompt:  document.getElementById('shadow-oil-prompt'),
   shadowOilText:    document.getElementById('shadow-oil-text'),
   shadowOilEditBtn: document.getElementById('shadow-oil-edit-btn'),
@@ -142,6 +155,11 @@ function bindEvents() {
     });
   }
 
+  // Audio Snap
+  if (dom.btnAudioSnap) {
+    dom.btnAudioSnap.addEventListener('click', handleAudioSnap);
+  }
+
   // Gallery Upload
   if (dom.galleryInput) {
     dom.galleryInput.addEventListener('change', async (e) => {
@@ -170,6 +188,20 @@ function bindEvents() {
   // History
   if (dom.historyBtn) dom.historyBtn.addEventListener('click', () => showHistory());
   if (dom.historyCloseBtn) dom.historyCloseBtn.addEventListener('click', () => hideHistory());
+
+  // Thali Share Mode
+  dom.thaliShareBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      // Remove active from all
+      dom.thaliShareBtns.forEach(b => b.classList.remove('active'));
+      // Add active to clicked
+      const target = e.target;
+      target.classList.add('active');
+      // Update state and recalculate
+      state.shareFraction = parseFloat(target.dataset.fraction) || 1.0;
+      updateMacroTotals();
+    });
+  });
 
   // Backdrop dismiss
   if (dom.backdrop) {
@@ -218,6 +250,17 @@ async function processImage(input) {
     // Step 2: Agent A — Vision Parser (Gemini VLM)
     const rawItems = await analyzeImage(compressed.base64, state.context);
 
+    // Leftover Math Mode
+    if (state.leftoverTargetMealId) {
+      await subtractLeftovers(state.leftoverTargetMealId, rawItems);
+      showToast('Leftovers calculated and subtracted! 📉');
+      state.leftoverTargetMealId = null;
+      state.capturedImageUrl = null;
+      handleRetake();
+      showHistory();
+      return; // Stop normal flow
+    }
+
     // Step 3: Apply Smart Revision Memory
     const revisedItems = applyRevisionMemory(rawItems);
 
@@ -240,6 +283,91 @@ async function processImage(input) {
   } finally {
     state.isProcessing = false;
     dom.shutterBtn.classList.remove('processing');
+    dom.processingOverlay.classList.add('hidden');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// AUDIO SNAP FLOW
+// ═══════════════════════════════════════════════════════════
+
+function handleAudioSnap() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  
+  if (!SpeechRecognition) {
+    showToast("Voice recognition not supported in your browser.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'en-IN'; // Indian English for better accuracy with Indian food terms
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.onstart = () => {
+    dom.listeningText.textContent = "Listening...";
+    dom.listeningOverlay.classList.remove('hidden');
+  };
+
+  recognition.onspeechstart = () => {
+    dom.listeningText.textContent = "Keep speaking...";
+  };
+
+  recognition.onspeechend = () => {
+    recognition.stop();
+    dom.listeningText.textContent = "Processing voice...";
+  };
+
+  recognition.onresult = async (event) => {
+    const transcript = event.results[0][0].transcript;
+    dom.listeningOverlay.classList.add('hidden');
+    
+    // Process the transcript
+    await processAudioTranscript(transcript);
+  };
+
+  recognition.onerror = (event) => {
+    console.error("Speech recognition error", event.error);
+    dom.listeningOverlay.classList.add('hidden');
+    showToast("Failed to hear you. Please try again.");
+  };
+
+  recognition.start();
+}
+
+async function processAudioTranscript(transcript) {
+  state.isProcessing = true;
+  dom.processingOverlay.classList.remove('hidden');
+
+  try {
+    // Agent C - Audio Parser (Gemini)
+    const rawItems = await analyzeTranscript(transcript, state.context);
+    
+    // Step 3: Apply Smart Revision Memory
+    const revisedItems = applyRevisionMemory(rawItems);
+
+    // Step 4: Agent B — Database Retriever (nutrition enrichment)
+    const enrichedItems = await enrichWithNutrition(revisedItems);
+
+    // Store in state
+    state.currentItems = enrichedItems;
+    state.capturedImageUrl = null; // No image for audio logs
+
+    // Step 5: Render results
+    renderFoodItems(enrichedItems);
+    updateMacroTotals();
+    checkShadowFat(enrichedItems);
+    
+    dom.cameraPlaceholder.classList.add('hidden'); // hide placeholder to show retake bar below
+    dom.controlsBar.classList.add('hidden');
+    dom.retakeBar.classList.remove('hidden');
+    showAnalyticsPanel();
+    
+  } catch (err) {
+    console.error('Audio analysis error:', err);
+    showToast(err.message || 'Failed to analyze voice log. Please try again.');
+  } finally {
+    state.isProcessing = false;
     dom.processingOverlay.classList.add('hidden');
   }
 }
@@ -372,10 +500,12 @@ function updateMacroTotals() {
     { calories: 0, protein: 0, carbs: 0, fats: 0 }
   );
 
-  animateNumber(dom.totalCalories, parseInt(dom.totalCalories.textContent) || 0, totals.calories);
-  animateNumber(dom.totalProtein, parseFloat(dom.totalProtein.textContent) || 0, totals.protein, 'g');
-  animateNumber(dom.totalCarbs, parseFloat(dom.totalCarbs.textContent) || 0, totals.carbs, 'g');
-  animateNumber(dom.totalFats, parseFloat(dom.totalFats.textContent) || 0, totals.fats, 'g');
+  const frac = state.shareFraction || 1.0;
+
+  animateNumber(dom.totalCalories, parseInt(dom.totalCalories.textContent) || 0, Math.round(totals.calories * frac));
+  animateNumber(dom.totalProtein, parseFloat(dom.totalProtein.textContent) || 0, totals.protein * frac, 'g');
+  animateNumber(dom.totalCarbs, parseFloat(dom.totalCarbs.textContent) || 0, totals.carbs * frac, 'g');
+  animateNumber(dom.totalFats, parseFloat(dom.totalFats.textContent) || 0, totals.fats * frac, 'g');
 }
 
 // ── Shadow Fat Prompt ──
@@ -454,17 +584,30 @@ async function handleLogMeal() {
   );
 
   try {
+    const frac = state.shareFraction || 1.0;
+    
+    // Scale the items based on share fraction
+    const scaledItems = state.currentItems.map(item => ({
+      ...item,
+      calories: item.calories * frac,
+      protein: item.protein * frac,
+      carbs: item.carbs * frac,
+      fats: item.fats * frac,
+      weight_grams: item.weight_grams * frac,
+      household_unit_weight_g: item.household_unit_weight_g * frac
+    }));
+
     await logMeal(
       {
         user_id: state.user.id,
         image_url: state.capturedImageUrl?.substring(0, 200) || null, // Truncate for storage
-        total_calories: Math.round(totals.calories),
-        total_protein: +totals.protein.toFixed(1),
-        total_carbs: +totals.carbs.toFixed(1),
-        total_fats: +totals.fats.toFixed(1),
+        total_calories: Math.round(totals.calories * frac),
+        total_protein: +(totals.protein * frac).toFixed(1),
+        total_carbs: +(totals.carbs * frac).toFixed(1),
+        total_fats: +(totals.fats * frac).toFixed(1),
         context: state.context?.mealContext || null,
       },
-      state.currentItems
+      scaledItems
     );
 
     // Success animation
@@ -519,15 +662,68 @@ async function showHistory() {
 
       const card = document.createElement('div');
       card.className = 'history-meal-card';
+      
+      let energyHtml = '';
+      if (meal.energy_rating) {
+        energyHtml = `<div class="energy-badge">⚡ Energy: ${meal.energy_rating}/10</div>`;
+      } else {
+        // Show slider for tagging
+        energyHtml = `
+          <div class="energy-tagger" id="energy-tagger-${meal.id}">
+            <label class="energy-label">How do you feel now? (Energy Level)</label>
+            <div class="energy-controls">
+              <input type="range" min="1" max="10" value="5" class="energy-slider" id="slider-${meal.id}">
+              <span class="energy-value" id="val-${meal.id}">5</span>
+              <button class="energy-save-btn" data-meal="${meal.id}">Save</button>
+            </div>
+          </div>
+        `;
+      }
+
       card.innerHTML = `
         <div class="history-meal-info">
           <span class="history-meal-context">${meal.time_of_day_context || 'Meal'}</span>
           <span class="history-meal-items">${escapeHtml(itemNames)}</span>
           <span class="history-meal-time">${time}</span>
         </div>
-        <span class="history-meal-cals">${meal.total_calculated_calories} kcal</span>
+        <div class="history-meal-right">
+          <span class="history-meal-cals">${meal.total_calculated_calories} kcal</span>
+          ${!meal.has_leftover_subtracted ? `<button class="scan-leftover-btn" data-meal="${meal.id}">📉 Leftover?</button>` : ''}
+        </div>
+        ${energyHtml}
       `;
       dom.historyList.appendChild(card);
+
+      if (!meal.has_leftover_subtracted) {
+        const leftoverBtn = card.querySelector('.scan-leftover-btn');
+        if (leftoverBtn) {
+          leftoverBtn.addEventListener('click', async () => {
+            state.leftoverTargetMealId = meal.id;
+            hideHistory();
+            dom.cameraPlaceholder.classList.add('hidden');
+            dom.cameraStream.classList.remove('hidden');
+            await camera.start();
+            showToast('Scan your leftover plate 📸');
+          });
+        }
+      }
+
+      if (!meal.energy_rating) {
+        const slider = card.querySelector(`#slider-${meal.id}`);
+        const valDisp = card.querySelector(`#val-${meal.id}`);
+        const saveBtn = card.querySelector('.energy-save-btn');
+
+        slider.addEventListener('input', (e) => {
+          valDisp.textContent = e.target.value;
+        });
+
+        saveBtn.addEventListener('click', async () => {
+          saveBtn.textContent = '...';
+          await updateMealEnergy(meal.id, parseInt(slider.value));
+          const tagger = card.querySelector(`#energy-tagger-${meal.id}`);
+          tagger.innerHTML = `<div class="energy-badge">⚡ Energy: ${slider.value}/10</div>`;
+        });
+      }
     });
   }
   

@@ -262,4 +262,124 @@ export async function getTodayTotals(userId) {
   return totals;
 }
 
+/** Update energy rating for a logged meal */
+export async function updateMealEnergy(mealId, energyRating) {
+  if (supabase) {
+    try {
+      await supabase
+        .from('meal_logs')
+        .update({ energy_rating: energyRating })
+        .eq('id', mealId);
+    } catch (err) {
+      console.warn('Supabase update failed:', err);
+    }
+  }
+
+  // Update IndexedDB fallback
+  const db = await openDB();
+  return new Promise((resolve) => {
+    const tx = db.transaction(STORES.MEAL_LOGS, 'readwrite');
+    const store = tx.objectStore(STORES.MEAL_LOGS);
+    const getReq = store.get(mealId);
+    getReq.onsuccess = () => {
+      const meal = getReq.result;
+      if (meal) {
+        meal.energy_rating = energyRating;
+        store.put(meal);
+      }
+      resolve();
+    };
+  });
+}
+
+/** Subtract leftovers from a meal */
+export async function subtractLeftovers(mealId, leftoverItems) {
+  const db = await openDB();
+  
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction([STORES.MEAL_LOGS, STORES.MEAL_LOG_ITEMS], 'readwrite');
+    const logsStore = tx.objectStore(STORES.MEAL_LOGS);
+    const itemsStore = tx.objectStore(STORES.MEAL_LOG_ITEMS);
+    
+    // Get all items for this meal
+    const itemsReq = itemsStore.index('meal_log_id').getAll(mealId);
+    itemsReq.onsuccess = async () => {
+      let originalItems = itemsReq.result;
+      
+      // Match and subtract
+      for (const leftover of leftoverItems) {
+        // Find best match in original items
+        const match = originalItems.find(i => 
+          i.food_name_logged.toLowerCase() === leftover.food_name_raw.toLowerCase()
+        );
+        
+        if (match) {
+          // Subtract calories and macros, ensuring we don't go below 0
+          match.calculated_calories = Math.max(0, match.calculated_calories - (leftover.calories || 0));
+          match.calculated_protein = Math.max(0, match.calculated_protein - (leftover.protein || 0));
+          match.calculated_carbs = Math.max(0, match.calculated_carbs - (leftover.carbs || 0));
+          match.calculated_fats = Math.max(0, match.calculated_fats - (leftover.fats || 0));
+          match.input_weight_grams = Math.max(0, match.input_weight_grams - (leftover.weight_grams || 0));
+          
+          itemsStore.put(match);
+        }
+      }
+      
+      // Re-sum totals for the meal
+      let newCalories = 0, newProtein = 0, newCarbs = 0, newFats = 0;
+      originalItems.forEach(i => {
+        newCalories += i.calculated_calories;
+        newProtein += i.calculated_protein;
+        newCarbs += i.calculated_carbs;
+        newFats += i.calculated_fats;
+      });
+      
+      // Update meal log
+      const mealReq = logsStore.get(mealId);
+      mealReq.onsuccess = async () => {
+        const meal = mealReq.result;
+        if (meal) {
+          meal.total_calculated_calories = Math.round(newCalories);
+          meal.total_protein_g = Number(newProtein.toFixed(1));
+          meal.total_carbs_g = Number(newCarbs.toFixed(1));
+          meal.total_fats_g = Number(newFats.toFixed(1));
+          meal.has_leftover_subtracted = true;
+          logsStore.put(meal);
+          
+          // Sync to Supabase if available
+          if (supabase) {
+            try {
+              await supabase.from('meal_logs').update({
+                total_calculated_calories: meal.total_calculated_calories,
+                total_protein_g: meal.total_protein_g,
+                total_carbs_g: meal.total_carbs_g,
+                total_fats_g: meal.total_fats_g,
+                has_leftover_subtracted: true
+              }).eq('id', mealId);
+              
+              // Upsert items (requires ID match)
+              for (const i of originalItems) {
+                await supabase.from('meal_log_items').update({
+                  calculated_calories: i.calculated_calories,
+                  calculated_protein: i.calculated_protein,
+                  calculated_carbs: i.calculated_carbs,
+                  calculated_fats: i.calculated_fats,
+                  input_weight_grams: i.input_weight_grams
+                }).eq('id', i.id);
+              }
+            } catch (err) {
+              console.warn('Supabase leftover sync failed:', err);
+            }
+          }
+          
+          resolve(meal);
+        } else {
+          resolve(null);
+        }
+      };
+    };
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
 export { STORES, generateUUID };
