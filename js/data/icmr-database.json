@@ -1,0 +1,2570 @@
+[
+  {
+    "id": "A001",
+    "name": "Amaranth seed, black",
+    "calories_per_100g": 356,
+    "protein_per_100g": 14.59,
+    "carbs_per_100g": 59.98,
+    "fats_per_100g": 5.74
+  },
+  {
+    "id": "A002",
+    "name": "Amaranth seed, pale brown",
+    "calories_per_100g": 356,
+    "protein_per_100g": 13.27,
+    "carbs_per_100g": 61.46,
+    "fats_per_100g": 5.56
+  },
+  {
+    "id": "A003",
+    "name": "Bajra",
+    "calories_per_100g": 348,
+    "protein_per_100g": 10.96,
+    "carbs_per_100g": 61.78,
+    "fats_per_100g": 5.43
+  },
+  {
+    "id": "A004",
+    "name": "Barley",
+    "calories_per_100g": 316,
+    "protein_per_100g": 10.94,
+    "carbs_per_100g": 61.29,
+    "fats_per_100g": 1.3
+  },
+  {
+    "id": "A005",
+    "name": "Jowar",
+    "calories_per_100g": 334,
+    "protein_per_100g": 9.97,
+    "carbs_per_100g": 67.68,
+    "fats_per_100g": 1.73
+  },
+  {
+    "id": "A006",
+    "name": "Maize, dry",
+    "calories_per_100g": 334,
+    "protein_per_100g": 8.8,
+    "carbs_per_100g": 64.77,
+    "fats_per_100g": 3.77
+  },
+  {
+    "id": "A007",
+    "name": "Maize, tender, local",
+    "calories_per_100g": 120,
+    "protein_per_100g": 3.57,
+    "carbs_per_100g": 22.69,
+    "fats_per_100g": 1.4
+  },
+  {
+    "id": "A008",
+    "name": "Maize, tender, sweet",
+    "calories_per_100g": 97,
+    "protein_per_100g": 4.16,
+    "carbs_per_100g": 16.42,
+    "fats_per_100g": 1.35
+  },
+  {
+    "id": "A009",
+    "name": "Quinoa",
+    "calories_per_100g": 328,
+    "protein_per_100g": 13.11,
+    "carbs_per_100g": 53.65,
+    "fats_per_100g": 5.5
+  },
+  {
+    "id": "A010",
+    "name": "Ragi",
+    "calories_per_100g": 321,
+    "protein_per_100g": 7.16,
+    "carbs_per_100g": 66.82,
+    "fats_per_100g": 1.92
+  },
+  {
+    "id": "A011",
+    "name": "Rice flakes",
+    "calories_per_100g": 354,
+    "protein_per_100g": 7.44,
+    "carbs_per_100g": 76.75,
+    "fats_per_100g": 1.14
+  },
+  {
+    "id": "A012",
+    "name": "Rice puffed",
+    "calories_per_100g": 362,
+    "protein_per_100g": 7.47,
+    "carbs_per_100g": 77.68,
+    "fats_per_100g": 1.62
+  },
+  {
+    "id": "A013",
+    "name": "Rice, raw, brown",
+    "calories_per_100g": 354,
+    "protein_per_100g": 9.16,
+    "carbs_per_100g": 74.8,
+    "fats_per_100g": 1.24
+  },
+  {
+    "id": "A014",
+    "name": "Rice, parboiled, milled",
+    "calories_per_100g": 352,
+    "protein_per_100g": 7.81,
+    "carbs_per_100g": 77.16,
+    "fats_per_100g": 0.55
+  },
+  {
+    "id": "A015",
+    "name": "Rice, raw, milled",
+    "calories_per_100g": 356,
+    "protein_per_100g": 7.94,
+    "carbs_per_100g": 78.24,
+    "fats_per_100g": 0.52
+  },
+  {
+    "id": "A016",
+    "name": "Samai",
+    "calories_per_100g": 346,
+    "protein_per_100g": 10.13,
+    "carbs_per_100g": 65.55,
+    "fats_per_100g": 3.89
+  },
+  {
+    "id": "A017",
+    "name": "Varagu",
+    "calories_per_100g": 332,
+    "protein_per_100g": 8.92,
+    "carbs_per_100g": 66.19,
+    "fats_per_100g": 2.55
+  },
+  {
+    "id": "A018",
+    "name": "Wheat flour, refined",
+    "calories_per_100g": 352,
+    "protein_per_100g": 10.36,
+    "carbs_per_100g": 74.27,
+    "fats_per_100g": 0.76
+  },
+  {
+    "id": "A019",
+    "name": "Wheat flour, atta",
+    "calories_per_100g": 320,
+    "protein_per_100g": 10.57,
+    "carbs_per_100g": 64.17,
+    "fats_per_100g": 1.53
+  },
+  {
+    "id": "A020",
+    "name": "Wheat, whole",
+    "calories_per_100g": 322,
+    "protein_per_100g": 10.59,
+    "carbs_per_100g": 64.72,
+    "fats_per_100g": 1.47
+  },
+  {
+    "id": "A021",
+    "name": "Wheat, bulgur",
+    "calories_per_100g": 342,
+    "protein_per_100g": 10.84,
+    "carbs_per_100g": 69.06,
+    "fats_per_100g": 1.45
+  },
+  {
+    "id": "A022",
+    "name": "Wheat, semolina",
+    "calories_per_100g": 334,
+    "protein_per_100g": 11.38,
+    "carbs_per_100g": 68.43,
+    "fats_per_100g": 0.74
+  },
+  {
+    "id": "A023",
+    "name": "Wheat, vermicelli",
+    "calories_per_100g": 333,
+    "protein_per_100g": 9.7,
+    "carbs_per_100g": 70.39,
+    "fats_per_100g": 0.45
+  },
+  {
+    "id": "A024",
+    "name": "Wheat, vermicelli, roasted",
+    "calories_per_100g": 340,
+    "protein_per_100g": 10.37,
+    "carbs_per_100g": 71.42,
+    "fats_per_100g": 0.49
+  },
+  {
+    "id": "B001",
+    "name": "Bengal gram, dal",
+    "calories_per_100g": 329,
+    "protein_per_100g": 21.55,
+    "carbs_per_100g": 46.72,
+    "fats_per_100g": 5.31
+  },
+  {
+    "id": "B002",
+    "name": "Bengal gram, whole",
+    "calories_per_100g": 287,
+    "protein_per_100g": 18.77,
+    "carbs_per_100g": 39.56,
+    "fats_per_100g": 5.11
+  },
+  {
+    "id": "B003",
+    "name": "Black gram, dal",
+    "calories_per_100g": 324,
+    "protein_per_100g": 23.06,
+    "carbs_per_100g": 51,
+    "fats_per_100g": 1.69
+  },
+  {
+    "id": "B004",
+    "name": "Black gram, whole",
+    "calories_per_100g": 291,
+    "protein_per_100g": 21.97,
+    "carbs_per_100g": 43.99,
+    "fats_per_100g": 1.58
+  },
+  {
+    "id": "B005",
+    "name": "Cowpea, brown",
+    "calories_per_100g": 320,
+    "protein_per_100g": 20.36,
+    "carbs_per_100g": 54.62,
+    "fats_per_100g": 1.15
+  },
+  {
+    "id": "B006",
+    "name": "Cowpea, white",
+    "calories_per_100g": 320,
+    "protein_per_100g": 21.25,
+    "carbs_per_100g": 53.77,
+    "fats_per_100g": 1.14
+  },
+  {
+    "id": "B007",
+    "name": "Field bean, black",
+    "calories_per_100g": 276,
+    "protein_per_100g": 19.93,
+    "carbs_per_100g": 43.46,
+    "fats_per_100g": 0.92
+  },
+  {
+    "id": "B008",
+    "name": "Field bean, brown",
+    "calories_per_100g": 283,
+    "protein_per_100g": 19.9,
+    "carbs_per_100g": 45.24,
+    "fats_per_100g": 0.98
+  },
+  {
+    "id": "B009",
+    "name": "Field bean,  white",
+    "calories_per_100g": 280,
+    "protein_per_100g": 19.84,
+    "carbs_per_100g": 44.53,
+    "fats_per_100g": 0.94
+  },
+  {
+    "id": "B010",
+    "name": "Green gram, dal",
+    "calories_per_100g": 326,
+    "protein_per_100g": 23.88,
+    "carbs_per_100g": 52.59,
+    "fats_per_100g": 1.35
+  },
+  {
+    "id": "B011",
+    "name": "Green gram, whole",
+    "calories_per_100g": 294,
+    "protein_per_100g": 22.53,
+    "carbs_per_100g": 46.13,
+    "fats_per_100g": 1.14
+  },
+  {
+    "id": "B012",
+    "name": "Horse gram, whole",
+    "calories_per_100g": 330,
+    "protein_per_100g": 21.73,
+    "carbs_per_100g": 57.24,
+    "fats_per_100g": 0.62
+  },
+  {
+    "id": "B013",
+    "name": "Lentil dal",
+    "calories_per_100g": 322,
+    "protein_per_100g": 24.35,
+    "carbs_per_100g": 52.53,
+    "fats_per_100g": 0.75
+  },
+  {
+    "id": "B014",
+    "name": "Lentil whole, brown",
+    "calories_per_100g": 299,
+    "protein_per_100g": 22.49,
+    "carbs_per_100g": 48.47,
+    "fats_per_100g": 0.64
+  },
+  {
+    "id": "B015",
+    "name": "Lentil whole, yellowish",
+    "calories_per_100g": 298,
+    "protein_per_100g": 22.87,
+    "carbs_per_100g": 47.91,
+    "fats_per_100g": 0.61
+  },
+  {
+    "id": "B016",
+    "name": "Moth bean",
+    "calories_per_100g": 309,
+    "protein_per_100g": 19.75,
+    "carbs_per_100g": 52.09,
+    "fats_per_100g": 1.76
+  },
+  {
+    "id": "B017",
+    "name": "Peas, dry",
+    "calories_per_100g": 303,
+    "protein_per_100g": 20.43,
+    "carbs_per_100g": 48.93,
+    "fats_per_100g": 1.89
+  },
+  {
+    "id": "B018",
+    "name": "Rajmah, black",
+    "calories_per_100g": 298,
+    "protein_per_100g": 19.01,
+    "carbs_per_100g": 49.59,
+    "fats_per_100g": 1.62
+  },
+  {
+    "id": "B019",
+    "name": "Rajmah, brown",
+    "calories_per_100g": 298,
+    "protein_per_100g": 19.5,
+    "carbs_per_100g": 48.83,
+    "fats_per_100g": 1.68
+  },
+  {
+    "id": "B020",
+    "name": "Rajmah, red",
+    "calories_per_100g": 299,
+    "protein_per_100g": 19.91,
+    "carbs_per_100g": 48.61,
+    "fats_per_100g": 1.77
+  },
+  {
+    "id": "B021",
+    "name": "Red gram, dal",
+    "calories_per_100g": 331,
+    "protein_per_100g": 21.7,
+    "carbs_per_100g": 55.23,
+    "fats_per_100g": 1.56
+  },
+  {
+    "id": "B022",
+    "name": "Red gram, whole",
+    "calories_per_100g": 274,
+    "protein_per_100g": 20.47,
+    "carbs_per_100g": 42.48,
+    "fats_per_100g": 1.38
+  },
+  {
+    "id": "B023",
+    "name": "Ricebean",
+    "calories_per_100g": 302,
+    "protein_per_100g": 19.97,
+    "carbs_per_100g": 51.26,
+    "fats_per_100g": 0.74
+  },
+  {
+    "id": "B024",
+    "name": "Soybean, brown",
+    "calories_per_100g": 381,
+    "protein_per_100g": 35.58,
+    "carbs_per_100g": 12.79,
+    "fats_per_100g": 19.82
+  },
+  {
+    "id": "B025",
+    "name": "Soybean, white",
+    "calories_per_100g": 377,
+    "protein_per_100g": 37.8,
+    "carbs_per_100g": 10.16,
+    "fats_per_100g": 19.42
+  },
+  {
+    "id": "C001",
+    "name": "Agathi leaves",
+    "calories_per_100g": 71,
+    "protein_per_100g": 8.01,
+    "carbs_per_100g": 5.21,
+    "fats_per_100g": 1.35
+  },
+  {
+    "id": "C002",
+    "name": "Amaranth leaves, green",
+    "calories_per_100g": 31,
+    "protein_per_100g": 3.29,
+    "carbs_per_100g": 2.28,
+    "fats_per_100g": 0.65
+  },
+  {
+    "id": "C003",
+    "name": "Amaranth leaves, red",
+    "calories_per_100g": 33,
+    "protein_per_100g": 3.93,
+    "carbs_per_100g": 2.37,
+    "fats_per_100g": 0.63
+  },
+  {
+    "id": "C004",
+    "name": "Amaranth leaves, red and green mix",
+    "calories_per_100g": 32,
+    "protein_per_100g": 3.09,
+    "carbs_per_100g": 2.87,
+    "fats_per_100g": 0.53
+  },
+  {
+    "id": "C005",
+    "name": "Amaranth spined, leaves, green",
+    "calories_per_100g": 26,
+    "protein_per_100g": 3.54,
+    "carbs_per_100g": 1.61,
+    "fats_per_100g": 0.36
+  },
+  {
+    "id": "C006",
+    "name": "Amaranth spined, leaves, red and green mix",
+    "calories_per_100g": 24,
+    "protein_per_100g": 2.8,
+    "carbs_per_100g": 1.45,
+    "fats_per_100g": 0.34
+  },
+  {
+    "id": "C007",
+    "name": "Basella leaves",
+    "calories_per_100g": 20,
+    "protein_per_100g": 1.57,
+    "carbs_per_100g": 2.01,
+    "fats_per_100g": 0.45
+  },
+  {
+    "id": "C008",
+    "name": "Bathua leaves",
+    "calories_per_100g": 28,
+    "protein_per_100g": 2.5,
+    "carbs_per_100g": 2.56,
+    "fats_per_100g": 0.44
+  },
+  {
+    "id": "C009",
+    "name": "Beet greens",
+    "calories_per_100g": 35,
+    "protein_per_100g": 2.38,
+    "carbs_per_100g": 3.86,
+    "fats_per_100g": 0.75
+  },
+  {
+    "id": "C010",
+    "name": "Betel leaves, big (Kolkata)",
+    "calories_per_100g": 48,
+    "protein_per_100g": 2.51,
+    "carbs_per_100g": 7.37,
+    "fats_per_100g": 0.75
+  },
+  {
+    "id": "C011",
+    "name": "Betel leaves, small",
+    "calories_per_100g": 44,
+    "protein_per_100g": 2.62,
+    "carbs_per_100g": 6.16,
+    "fats_per_100g": 0.75
+  },
+  {
+    "id": "C012",
+    "name": "Brussels sprouts",
+    "calories_per_100g": 44,
+    "protein_per_100g": 4.26,
+    "carbs_per_100g": 5.09,
+    "fats_per_100g": 0.5
+  },
+  {
+    "id": "C013",
+    "name": "Cabbage, Chinese",
+    "calories_per_100g": 18,
+    "protein_per_100g": 1.58,
+    "carbs_per_100g": 2.36,
+    "fats_per_100g": 0.13
+  },
+  {
+    "id": "C014",
+    "name": "Cabbage, collard greens",
+    "calories_per_100g": 30,
+    "protein_per_100g": 3.63,
+    "carbs_per_100g": 2.79,
+    "fats_per_100g": 0.27
+  },
+  {
+    "id": "C015",
+    "name": "Cabbage, green",
+    "calories_per_100g": 22,
+    "protein_per_100g": 1.36,
+    "carbs_per_100g": 3.25,
+    "fats_per_100g": 0.12
+  },
+  {
+    "id": "C016",
+    "name": "Cabbage, violet",
+    "calories_per_100g": 23,
+    "protein_per_100g": 1.39,
+    "carbs_per_100g": 3.54,
+    "fats_per_100g": 0.21
+  },
+  {
+    "id": "C017",
+    "name": "Cauliflower leaves",
+    "calories_per_100g": 35,
+    "protein_per_100g": 3.9,
+    "carbs_per_100g": 3.39,
+    "fats_per_100g": 0.42
+  },
+  {
+    "id": "C018",
+    "name": "Colocasia leaves, green",
+    "calories_per_100g": 43,
+    "protein_per_100g": 3.42,
+    "carbs_per_100g": 3.69,
+    "fats_per_100g": 1.38
+  },
+  {
+    "id": "C019",
+    "name": "Drumstick leaves",
+    "calories_per_100g": 67,
+    "protein_per_100g": 6.41,
+    "carbs_per_100g": 5.62,
+    "fats_per_100g": 1.64
+  },
+  {
+    "id": "C020",
+    "name": "Fenugreek leaves",
+    "calories_per_100g": 34,
+    "protein_per_100g": 3.68,
+    "carbs_per_100g": 2.17,
+    "fats_per_100g": 0.83
+  },
+  {
+    "id": "C021",
+    "name": "Garden cress",
+    "calories_per_100g": 50,
+    "protein_per_100g": 5.62,
+    "carbs_per_100g": 4.48,
+    "fats_per_100g": 0.8
+  },
+  {
+    "id": "C022",
+    "name": "Gogu leaves, green",
+    "calories_per_100g": 36,
+    "protein_per_100g": 1.86,
+    "carbs_per_100g": 4.06,
+    "fats_per_100g": 1.09
+  },
+  {
+    "id": "C023",
+    "name": "Gogu leaves, red",
+    "calories_per_100g": 37,
+    "protein_per_100g": 1.85,
+    "carbs_per_100g": 4.24,
+    "fats_per_100g": 1.07
+  },
+  {
+    "id": "C024",
+    "name": "Knol-Khol, leaves",
+    "calories_per_100g": 43,
+    "protein_per_100g": 3.12,
+    "carbs_per_100g": 6.16,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "C025",
+    "name": "Lettuce",
+    "calories_per_100g": 22,
+    "protein_per_100g": 1.54,
+    "carbs_per_100g": 3.01,
+    "fats_per_100g": 0.27
+  },
+  {
+    "id": "C026",
+    "name": "Mustard leaves",
+    "calories_per_100g": 30,
+    "protein_per_100g": 3.52,
+    "carbs_per_100g": 2.41,
+    "fats_per_100g": 0.51
+  },
+  {
+    "id": "C027",
+    "name": "Pak Choi leaves",
+    "calories_per_100g": 16,
+    "protein_per_100g": 1.41,
+    "carbs_per_100g": 1.78,
+    "fats_per_100g": 0.25
+  },
+  {
+    "id": "Food Name",
+    "name": "Food code",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "C028",
+    "name": "Parsley",
+    "calories_per_100g": 73,
+    "protein_per_100g": 5.55,
+    "carbs_per_100g": 9.43,
+    "fats_per_100g": 1.14
+  },
+  {
+    "id": "C029",
+    "name": "Ponnaganni",
+    "calories_per_100g": 51,
+    "protein_per_100g": 5.29,
+    "carbs_per_100g": 5.17,
+    "fats_per_100g": 0.71
+  },
+  {
+    "id": "C030",
+    "name": "Pumpkin leaves, tender",
+    "calories_per_100g": 44,
+    "protein_per_100g": 4.21,
+    "carbs_per_100g": 4.75,
+    "fats_per_100g": 0.74
+  },
+  {
+    "id": "C031",
+    "name": "Radish leaves",
+    "calories_per_100g": 26,
+    "protein_per_100g": 2.22,
+    "carbs_per_100g": 2.77,
+    "fats_per_100g": 0.51
+  },
+  {
+    "id": "C032",
+    "name": "Rumex leaves",
+    "calories_per_100g": 20,
+    "protein_per_100g": 1.62,
+    "carbs_per_100g": 2.33,
+    "fats_per_100g": 0.33
+  },
+  {
+    "id": "C033",
+    "name": "Spinach",
+    "calories_per_100g": 24,
+    "protein_per_100g": 2.14,
+    "carbs_per_100g": 2.05,
+    "fats_per_100g": 0.64
+  },
+  {
+    "id": "C034",
+    "name": "Tamarind leaves, tende",
+    "calories_per_100g": 71,
+    "protein_per_100g": 5.84,
+    "carbs_per_100g": 10.04,
+    "fats_per_100g": 0.49
+  },
+  {
+    "id": "D001",
+    "name": "Ash gourd",
+    "calories_per_100g": 17,
+    "protein_per_100g": 0.79,
+    "carbs_per_100g": 2.84,
+    "fats_per_100g": 0.14
+  },
+  {
+    "id": "D002",
+    "name": "Bamboo shoot, tender",
+    "calories_per_100g": 16,
+    "protein_per_100g": 1.33,
+    "carbs_per_100g": 1.67,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "D003",
+    "name": "Bean scarlet, tender",
+    "calories_per_100g": 43,
+    "protein_per_100g": 2.86,
+    "carbs_per_100g": 5.16,
+    "fats_per_100g": 0.99
+  },
+  {
+    "id": "D004",
+    "name": "Bitter gourd, jagged, teeth ridges, elongate",
+    "calories_per_100g": 21,
+    "protein_per_100g": 1.44,
+    "carbs_per_100g": 2.82,
+    "fats_per_100g": 0.24
+  },
+  {
+    "id": "D005",
+    "name": "Bitter gourd, jagged, teeth ridges, short",
+    "calories_per_100g": 19,
+    "protein_per_100g": 1.34,
+    "carbs_per_100g": 2.53,
+    "fats_per_100g": 0.24
+  },
+  {
+    "id": "D006",
+    "name": "Bitter gourd, jagged, smooth ridges, elongate",
+    "calories_per_100g": 19,
+    "protein_per_100g": 1.61,
+    "carbs_per_100g": 2.29,
+    "fats_per_100g": 0.26
+  },
+  {
+    "id": "D007",
+    "name": "Bottle gourd, elongate, pale green",
+    "calories_per_100g": 11,
+    "protein_per_100g": 0.53,
+    "carbs_per_100g": 1.68,
+    "fats_per_100g": 0.13
+  },
+  {
+    "id": "D008",
+    "name": "Bottle gourd, round, pale green",
+    "calories_per_100g": 14,
+    "protein_per_100g": 0.42,
+    "carbs_per_100g": 2.53,
+    "fats_per_100g": 0.12
+  },
+  {
+    "id": "D009",
+    "name": "Bottle gourd, elongate, dark green",
+    "calories_per_100g": 13,
+    "protein_per_100g": 0.49,
+    "carbs_per_100g": 2.25,
+    "fats_per_100g": 0.13
+  },
+  {
+    "id": "D010",
+    "name": "Brinjal-1",
+    "calories_per_100g": 27,
+    "protein_per_100g": 1.77,
+    "carbs_per_100g": 3.49,
+    "fats_per_100g": 0.39
+  },
+  {
+    "id": "D011",
+    "name": "Brinjal-2",
+    "calories_per_100g": 24,
+    "protein_per_100g": 1.82,
+    "carbs_per_100g": 2.71,
+    "fats_per_100g": 0.34
+  },
+  {
+    "id": "D012",
+    "name": "Brinjal-3",
+    "calories_per_100g": 24,
+    "protein_per_100g": 1.36,
+    "carbs_per_100g": 3.38,
+    "fats_per_100g": 0.33
+  },
+  {
+    "id": "D013",
+    "name": "Brinjal-4",
+    "calories_per_100g": 24,
+    "protein_per_100g": 1.51,
+    "carbs_per_100g": 3.19,
+    "fats_per_100g": 0.31
+  },
+  {
+    "id": "D014",
+    "name": "Brinjal-5",
+    "calories_per_100g": 27,
+    "protein_per_100g": 1.38,
+    "carbs_per_100g": 4.02,
+    "fats_per_100g": 0.29
+  },
+  {
+    "id": "D015",
+    "name": "Brinjal-6",
+    "calories_per_100g": 23,
+    "protein_per_100g": 1.46,
+    "carbs_per_100g": 3.29,
+    "fats_per_100g": 0.29
+  },
+  {
+    "id": "D016",
+    "name": "Brinjal-7",
+    "calories_per_100g": 23,
+    "protein_per_100g": 1.4,
+    "carbs_per_100g": 3.1,
+    "fats_per_100g": 0.37
+  },
+  {
+    "id": "D017",
+    "name": "Brinjal-8",
+    "calories_per_100g": 28,
+    "protein_per_100g": 1.82,
+    "carbs_per_100g": 3.75,
+    "fats_per_100g": 0.33
+  },
+  {
+    "id": "D018",
+    "name": "Brinjal-9",
+    "calories_per_100g": 25,
+    "protein_per_100g": 1.47,
+    "carbs_per_100g": 3.52,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "D019",
+    "name": "Brinjal-10",
+    "calories_per_100g": 28,
+    "protein_per_100g": 1.68,
+    "carbs_per_100g": 4.08,
+    "fats_per_100g": 0.25
+  },
+  {
+    "id": "D020",
+    "name": "Brinjal-11",
+    "calories_per_100g": 25,
+    "protein_per_100g": 1.43,
+    "carbs_per_100g": 3.53,
+    "fats_per_100g": 0.31
+  },
+  {
+    "id": "D021",
+    "name": "Brinjal-12",
+    "calories_per_100g": 22,
+    "protein_per_100g": 1.6,
+    "carbs_per_100g": 2.73,
+    "fats_per_100g": 0.27
+  },
+  {
+    "id": "D022",
+    "name": "Brinjal-13",
+    "calories_per_100g": 30,
+    "protein_per_100g": 1.49,
+    "carbs_per_100g": 4.51,
+    "fats_per_100g": 0.31
+  },
+  {
+    "id": "D023",
+    "name": "Brinjal-14",
+    "calories_per_100g": 25,
+    "protein_per_100g": 1.56,
+    "carbs_per_100g": 3.27,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "D024",
+    "name": "Brinjal-15",
+    "calories_per_100g": 27,
+    "protein_per_100g": 1.58,
+    "carbs_per_100g": 3.96,
+    "fats_per_100g": 0.29
+  },
+  {
+    "id": "D025",
+    "name": "Brinjal-16",
+    "calories_per_100g": 25,
+    "protein_per_100g": 1.26,
+    "carbs_per_100g": 3.46,
+    "fats_per_100g": 0.34
+  },
+  {
+    "id": "D026",
+    "name": "Brinjal-17",
+    "calories_per_100g": 22,
+    "protein_per_100g": 1.18,
+    "carbs_per_100g": 2.89,
+    "fats_per_100g": 0.36
+  },
+  {
+    "id": "D027",
+    "name": "Brinjal-18",
+    "calories_per_100g": 28,
+    "protein_per_100g": 1.47,
+    "carbs_per_100g": 4.1,
+    "fats_per_100g": 0.33
+  },
+  {
+    "id": "D028",
+    "name": "Brinjal-19",
+    "calories_per_100g": 24,
+    "protein_per_100g": 1.26,
+    "carbs_per_100g": 3.39,
+    "fats_per_100g": 0.31
+  },
+  {
+    "id": "D029",
+    "name": "Brinjal-20",
+    "calories_per_100g": 24,
+    "protein_per_100g": 1.44,
+    "carbs_per_100g": 3.15,
+    "fats_per_100g": 0.34
+  },
+  {
+    "id": "D030",
+    "name": "Brinjal-21",
+    "calories_per_100g": 27,
+    "protein_per_100g": 1.36,
+    "carbs_per_100g": 3.93,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "D031",
+    "name": "Brinjal - all varieties",
+    "calories_per_100g": 25,
+    "protein_per_100g": 1.48,
+    "carbs_per_100g": 3.52,
+    "fats_per_100g": 0.32
+  },
+  {
+    "id": "D032",
+    "name": "Broad beans",
+    "calories_per_100g": 29,
+    "protein_per_100g": 3.85,
+    "carbs_per_100g": 2.11,
+    "fats_per_100g": 0.15
+  },
+  {
+    "id": "D033",
+    "name": "Capsicum, green",
+    "calories_per_100g": 16,
+    "protein_per_100g": 1.11,
+    "carbs_per_100g": 1.84,
+    "fats_per_100g": 0.34
+  },
+  {
+    "id": "D034",
+    "name": "Capsicum, red",
+    "calories_per_100g": 20,
+    "protein_per_100g": 1.47,
+    "carbs_per_100g": 2.14,
+    "fats_per_100g": 0.47
+  },
+  {
+    "id": "D035",
+    "name": "Capsicum, yellow",
+    "calories_per_100g": 19,
+    "protein_per_100g": 1.35,
+    "carbs_per_100g": 1.95,
+    "fats_per_100g": 0.41
+  },
+  {
+    "id": "D036",
+    "name": "Cauliflower",
+    "calories_per_100g": 23,
+    "protein_per_100g": 2.15,
+    "carbs_per_100g": 2.03,
+    "fats_per_100g": 0.44
+  },
+  {
+    "id": "D037",
+    "name": "Celery stalk",
+    "calories_per_100g": 16,
+    "protein_per_100g": 0.98,
+    "carbs_per_100g": 2.33,
+    "fats_per_100g": 0.24
+  },
+  {
+    "id": "D038",
+    "name": "Cho-cho-marrow",
+    "calories_per_100g": 19,
+    "protein_per_100g": 0.66,
+    "carbs_per_100g": 3.47,
+    "fats_per_100g": 0.15
+  },
+  {
+    "id": "D039",
+    "name": "Cluster beans",
+    "calories_per_100g": 40,
+    "protein_per_100g": 3.55,
+    "carbs_per_100g": 4.91,
+    "fats_per_100g": 0.37
+  },
+  {
+    "id": "D040",
+    "name": "Colocasia, stem, black",
+    "calories_per_100g": 24,
+    "protein_per_100g": 0.76,
+    "carbs_per_100g": 3.83,
+    "fats_per_100g": 0.34
+  },
+  {
+    "id": "D041",
+    "name": "Colocasia, stem, green",
+    "calories_per_100g": 19,
+    "protein_per_100g": 0.91,
+    "carbs_per_100g": 2.86,
+    "fats_per_100g": 0.22
+  },
+  {
+    "id": "D042",
+    "name": "Corn, baby",
+    "calories_per_100g": 73,
+    "protein_per_100g": 2.69,
+    "carbs_per_100g": 11.66,
+    "fats_per_100g": 1.33
+  },
+  {
+    "id": "D043",
+    "name": "Cucumber, green, elongate",
+    "calories_per_100g": 20,
+    "protein_per_100g": 0.71,
+    "carbs_per_100g": 3.48,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "D044",
+    "name": "Cucumber, green, short",
+    "calories_per_100g": 17,
+    "protein_per_100g": 0.83,
+    "carbs_per_100g": 2.82,
+    "fats_per_100g": 0.18
+  },
+  {
+    "id": "D045",
+    "name": "Cucumber, orange, round",
+    "calories_per_100g": 20,
+    "protein_per_100g": 0.98,
+    "carbs_per_100g": 3.01,
+    "fats_per_100g": 0.24
+  },
+  {
+    "id": "D046",
+    "name": "Drumstick",
+    "calories_per_100g": 29,
+    "protein_per_100g": 2.62,
+    "carbs_per_100g": 3.76,
+    "fats_per_100g": 0.12
+  },
+  {
+    "id": "D047",
+    "name": "Field beans, tender, broad",
+    "calories_per_100g": 31,
+    "protein_per_100g": 3.06,
+    "carbs_per_100g": 2.75,
+    "fats_per_100g": 0.64
+  },
+  {
+    "id": "D048",
+    "name": "Field beans, tender, lean",
+    "calories_per_100g": 33,
+    "protein_per_100g": 3.71,
+    "carbs_per_100g": 2.85,
+    "fats_per_100g": 0.6
+  },
+  {
+    "id": "D049",
+    "name": "French beans, country",
+    "calories_per_100g": 24,
+    "protein_per_100g": 2.49,
+    "carbs_per_100g": 2.68,
+    "fats_per_100g": 0.26
+  },
+  {
+    "id": "D050",
+    "name": "French beans, hybrid",
+    "calories_per_100g": 22,
+    "protein_per_100g": 2.12,
+    "carbs_per_100g": 2.63,
+    "fats_per_100g": 0.19
+  },
+  {
+    "id": "D051",
+    "name": "Jack fruit, raw",
+    "calories_per_100g": 26,
+    "protein_per_100g": 1.98,
+    "carbs_per_100g": 3.48,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "D052",
+    "name": "Jack fruit, seed, mature",
+    "calories_per_100g": 77,
+    "protein_per_100g": 5.79,
+    "carbs_per_100g": 11.81,
+    "fats_per_100g": 0.44
+  },
+  {
+    "id": "D053",
+    "name": "Knol - Khol",
+    "calories_per_100g": 16,
+    "protein_per_100g": 1.58,
+    "carbs_per_100g": 1.39,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "D054",
+    "name": "Kovai, big",
+    "calories_per_100g": 17,
+    "protein_per_100g": 1.39,
+    "carbs_per_100g": 2.01,
+    "fats_per_100g": 0.24
+  },
+  {
+    "id": "D055",
+    "name": "Kovai, small",
+    "calories_per_100g": 19,
+    "protein_per_100g": 1.22,
+    "carbs_per_100g": 2.41,
+    "fats_per_100g": 0.24
+  },
+  {
+    "id": "D056",
+    "name": "Ladies finger",
+    "calories_per_100g": 27,
+    "protein_per_100g": 2.08,
+    "carbs_per_100g": 3.62,
+    "fats_per_100g": 0.22
+  },
+  {
+    "id": "D057",
+    "name": "Mango, green, raw",
+    "calories_per_100g": 49,
+    "protein_per_100g": 0.69,
+    "carbs_per_100g": 10.59,
+    "fats_per_100g": 0.08
+  },
+  {
+    "id": "D058",
+    "name": "Onion, stalk",
+    "calories_per_100g": 26,
+    "protein_per_100g": 2.07,
+    "carbs_per_100g": 2.99,
+    "fats_per_100g": 0.26
+  },
+  {
+    "id": "D059",
+    "name": "Papaya, raw",
+    "calories_per_100g": 24,
+    "protein_per_100g": 0.5,
+    "carbs_per_100g": 4.4,
+    "fats_per_100g": 0.23
+  },
+  {
+    "id": "D060",
+    "name": "Parwar",
+    "calories_per_100g": 24,
+    "protein_per_100g": 1.4,
+    "carbs_per_100g": 3.54,
+    "fats_per_100g": 0.3
+  },
+  {
+    "id": "D061",
+    "name": "Peas, fresh",
+    "calories_per_100g": 81,
+    "protein_per_100g": 7.25,
+    "carbs_per_100g": 11.88,
+    "fats_per_100g": 0.13
+  },
+  {
+    "id": "D062",
+    "name": "Plantain, flower",
+    "calories_per_100g": 21,
+    "protein_per_100g": 1.47,
+    "carbs_per_100g": 2.15,
+    "fats_per_100g": 0.63
+  },
+  {
+    "id": "D063",
+    "name": "Plantain, green",
+    "calories_per_100g": 80,
+    "protein_per_100g": 1.18,
+    "carbs_per_100g": 17.58,
+    "fats_per_100g": 0.23
+  },
+  {
+    "id": "D064",
+    "name": "Plantain, stem",
+    "calories_per_100g": 39,
+    "protein_per_100g": 0.35,
+    "carbs_per_100g": 8.64,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "D065",
+    "name": "Pumpkin, green, cylindrical",
+    "calories_per_100g": 25,
+    "protein_per_100g": 0.87,
+    "carbs_per_100g": 4.22,
+    "fats_per_100g": 0.18
+  },
+  {
+    "id": "D066",
+    "name": "Pumpkin, orange,  round",
+    "calories_per_100g": 23,
+    "protein_per_100g": 0.84,
+    "carbs_per_100g": 4,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "D067",
+    "name": "Red gram, tender, fresh",
+    "calories_per_100g": 124,
+    "protein_per_100g": 8.09,
+    "carbs_per_100g": 19.46,
+    "fats_per_100g": 0.92
+  },
+  {
+    "id": "D068",
+    "name": "Ridge gourd",
+    "calories_per_100g": 13,
+    "protein_per_100g": 0.91,
+    "carbs_per_100g": 1.72,
+    "fats_per_100g": 0.14
+  },
+  {
+    "id": "D069",
+    "name": "Ridge gourd, smooth skin",
+    "calories_per_100g": 15,
+    "protein_per_100g": 0.98,
+    "carbs_per_100g": 2.24,
+    "fats_per_100g": 0.13
+  },
+  {
+    "id": "D070",
+    "name": "Snake gourd, long, pale green",
+    "calories_per_100g": 12,
+    "protein_per_100g": 0.98,
+    "carbs_per_100g": 1.27,
+    "fats_per_100g": 0.25
+  },
+  {
+    "id": "D071",
+    "name": "Snake gourd, long, dark green",
+    "calories_per_100g": 12,
+    "protein_per_100g": 0.89,
+    "carbs_per_100g": 1.23,
+    "fats_per_100g": 0.25
+  },
+  {
+    "id": "D072",
+    "name": "Snake gourd, short",
+    "calories_per_100g": 15,
+    "protein_per_100g": 0.54,
+    "carbs_per_100g": 2.15,
+    "fats_per_100g": 0.26
+  },
+  {
+    "id": "D073",
+    "name": "Tinda, tender",
+    "calories_per_100g": 14,
+    "protein_per_100g": 1.02,
+    "carbs_per_100g": 1.9,
+    "fats_per_100g": 0.17
+  },
+  {
+    "id": "D074",
+    "name": "Tomato, green",
+    "calories_per_100g": 21,
+    "protein_per_100g": 1.12,
+    "carbs_per_100g": 3.18,
+    "fats_per_100g": 0.27
+  },
+  {
+    "id": "D075",
+    "name": "Tomato, ripe, hybrid",
+    "calories_per_100g": 19,
+    "protein_per_100g": 0.76,
+    "carbs_per_100g": 3.2,
+    "fats_per_100g": 0.25
+  },
+  {
+    "id": "D076",
+    "name": "Tomato, ripe, local",
+    "calories_per_100g": 20,
+    "protein_per_100g": 0.9,
+    "carbs_per_100g": 2.71,
+    "fats_per_100g": 0.47
+  },
+  {
+    "id": "D077",
+    "name": "Zucchini, green",
+    "calories_per_100g": 20,
+    "protein_per_100g": 1.1,
+    "carbs_per_100g": 2.33,
+    "fats_per_100g": 0.51
+  },
+  {
+    "id": "D078",
+    "name": "Zucchini, yellow",
+    "calories_per_100g": 19,
+    "protein_per_100g": 1.31,
+    "carbs_per_100g": 2.2,
+    "fats_per_100g": 0.44
+  },
+  {
+    "id": "E001",
+    "name": "Apple, big",
+    "calories_per_100g": 62,
+    "protein_per_100g": 0.29,
+    "carbs_per_100g": 13.11,
+    "fats_per_100g": 0.64
+  },
+  {
+    "id": "E002",
+    "name": "Apple, green",
+    "calories_per_100g": 51,
+    "protein_per_100g": 0.46,
+    "carbs_per_100g": 10.65,
+    "fats_per_100g": 0.5
+  },
+  {
+    "id": "E003",
+    "name": "Apple, small",
+    "calories_per_100g": 64,
+    "protein_per_100g": 0.31,
+    "carbs_per_100g": 13.95,
+    "fats_per_100g": 0.53
+  },
+  {
+    "id": "E004",
+    "name": "Apple, small, Kashmir",
+    "calories_per_100g": 64,
+    "protein_per_100g": 0.27,
+    "carbs_per_100g": 13.99,
+    "fats_per_100g": 0.6
+  },
+  {
+    "id": "E005",
+    "name": "Apricot, dried",
+    "calories_per_100g": 316,
+    "protein_per_100g": 3.17,
+    "carbs_per_100g": 72.63,
+    "fats_per_100g": 0.74
+  },
+  {
+    "id": "E006",
+    "name": "Apricot, processed",
+    "calories_per_100g": 56,
+    "protein_per_100g": 1.47,
+    "carbs_per_100g": 10.93,
+    "fats_per_100g": 0.64
+  },
+  {
+    "id": "E007",
+    "name": "Avocado fruit",
+    "calories_per_100g": 144,
+    "protein_per_100g": 2.95,
+    "carbs_per_100g": 1.75,
+    "fats_per_100g": 13.86
+  },
+  {
+    "id": "E008",
+    "name": "Bael fruit",
+    "calories_per_100g": 136,
+    "protein_per_100g": 2.63,
+    "carbs_per_100g": 28.21,
+    "fats_per_100g": 0.57
+  },
+  {
+    "id": "E009",
+    "name": "Banana, ripe, montham",
+    "calories_per_100g": 111,
+    "protein_per_100g": 1.25,
+    "carbs_per_100g": 24.95,
+    "fats_per_100g": 0.32
+  },
+  {
+    "id": "E010",
+    "name": "Banana, ripe, poovam",
+    "calories_per_100g": 106,
+    "protein_per_100g": 1.49,
+    "carbs_per_100g": 23.41,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "E011",
+    "name": "Banana, ripe, red",
+    "calories_per_100g": 112,
+    "protein_per_100g": 1.29,
+    "carbs_per_100g": 25.21,
+    "fats_per_100g": 0.29
+  },
+  {
+    "id": "E012",
+    "name": "Banana, ripe, robusta",
+    "calories_per_100g": 105,
+    "protein_per_100g": 1.23,
+    "carbs_per_100g": 23.63,
+    "fats_per_100g": 0.33
+  },
+  {
+    "id": "E013",
+    "name": "Black berry",
+    "calories_per_100g": 54,
+    "protein_per_100g": 0.92,
+    "carbs_per_100g": 10.64,
+    "fats_per_100g": 0.63
+  },
+  {
+    "id": "E014",
+    "name": "Cherries, red",
+    "calories_per_100g": 60,
+    "protein_per_100g": 1.49,
+    "carbs_per_100g": 11.87,
+    "fats_per_100g": 0.46
+  },
+  {
+    "id": "E015",
+    "name": "Currants, black",
+    "calories_per_100g": 54,
+    "protein_per_100g": 1.51,
+    "carbs_per_100g": 9.93,
+    "fats_per_100g": 0.53
+  },
+  {
+    "id": "E016",
+    "name": "Custard apple",
+    "calories_per_100g": 99,
+    "protein_per_100g": 1.62,
+    "carbs_per_100g": 20.38,
+    "fats_per_100g": 0.67
+  },
+  {
+    "id": "E017",
+    "name": "Dates, dry, pale brown",
+    "calories_per_100g": 320,
+    "protein_per_100g": 2.45,
+    "carbs_per_100g": 74.91,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "E018",
+    "name": "Dates, dry, dark brown",
+    "calories_per_100g": 311,
+    "protein_per_100g": 2.38,
+    "carbs_per_100g": 72.67,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "E019",
+    "name": "Dates, processed",
+    "calories_per_100g": 286,
+    "protein_per_100g": 1.18,
+    "carbs_per_100g": 67.95,
+    "fats_per_100g": 0.41
+  },
+  {
+    "id": "E020",
+    "name": "Fig",
+    "calories_per_100g": 82,
+    "protein_per_100g": 2.03,
+    "carbs_per_100g": 16.28,
+    "fats_per_100g": 0.37
+  },
+  {
+    "id": "E021",
+    "name": "Gooseberry",
+    "calories_per_100g": 24,
+    "protein_per_100g": 0.34,
+    "carbs_per_100g": 4.39,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "E022",
+    "name": "Grapes, seeded, round, black",
+    "calories_per_100g": 61,
+    "protein_per_100g": 0.76,
+    "carbs_per_100g": 13.23,
+    "fats_per_100g": 0.32
+  },
+  {
+    "id": "E023",
+    "name": "Grapes, seeded, round, green",
+    "calories_per_100g": 56,
+    "protein_per_100g": 0.77,
+    "carbs_per_100g": 12.19,
+    "fats_per_100g": 0.29
+  },
+  {
+    "id": "E024",
+    "name": "Grapes, seeded, round, red",
+    "calories_per_100g": 58,
+    "protein_per_100g": 0.95,
+    "carbs_per_100g": 12.55,
+    "fats_per_100g": 0.29
+  },
+  {
+    "id": "E025",
+    "name": "Grapes, seedless, oval, black",
+    "calories_per_100g": 94,
+    "protein_per_100g": 1.41,
+    "carbs_per_100g": 20.48,
+    "fats_per_100g": 0.46
+  },
+  {
+    "id": "E026",
+    "name": "Grapes, seedless, round, green",
+    "calories_per_100g": 54,
+    "protein_per_100g": 0.62,
+    "carbs_per_100g": 11.81,
+    "fats_per_100g": 0.26
+  },
+  {
+    "id": "E027",
+    "name": "Grapes, seedless, round, black",
+    "calories_per_100g": 89,
+    "protein_per_100g": 1.24,
+    "carbs_per_100g": 19.86,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "E028",
+    "name": "Guava, white flesh",
+    "calories_per_100g": 32,
+    "protein_per_100g": 1.44,
+    "carbs_per_100g": 5.13,
+    "fats_per_100g": 0.32
+  },
+  {
+    "id": "E029",
+    "name": "Guava, pink flesh",
+    "calories_per_100g": 47,
+    "protein_per_100g": 1.19,
+    "carbs_per_100g": 9.14,
+    "fats_per_100g": 0.25
+  },
+  {
+    "id": "E030",
+    "name": "Jack fruit, ripe",
+    "calories_per_100g": 72,
+    "protein_per_100g": 2.74,
+    "carbs_per_100g": 14.01,
+    "fats_per_100g": 0.15
+  },
+  {
+    "id": "E031",
+    "name": "Jambu fruit, ripe",
+    "calories_per_100g": 56,
+    "protein_per_100g": 0.82,
+    "carbs_per_100g": 12.3,
+    "fats_per_100g": 0.17
+  },
+  {
+    "id": "E032",
+    "name": "Karonda fruit",
+    "calories_per_100g": 34,
+    "protein_per_100g": 1.15,
+    "carbs_per_100g": 2.87,
+    "fats_per_100g": 1.67
+  },
+  {
+    "id": "E034",
+    "name": "Lime, sweet,pulp",
+    "calories_per_100g": 27,
+    "protein_per_100g": 0.76,
+    "carbs_per_100g": 5.18,
+    "fats_per_100g": 0.2
+  },
+  {
+    "id": "E035",
+    "name": "Litchi",
+    "calories_per_100g": 54,
+    "protein_per_100g": 0.99,
+    "carbs_per_100g": 11.41,
+    "fats_per_100g": 0.26
+  },
+  {
+    "id": "E036",
+    "name": "Mango, ripe, banganapalli",
+    "calories_per_100g": 42,
+    "protein_per_100g": 0.54,
+    "carbs_per_100g": 8.18,
+    "fats_per_100g": 0.55
+  },
+  {
+    "id": "E037",
+    "name": "Mango, ripe, gulabkhas",
+    "calories_per_100g": 50,
+    "protein_per_100g": 0.52,
+    "carbs_per_100g": 10.32,
+    "fats_per_100g": 0.53
+  },
+  {
+    "id": "E038",
+    "name": "Mango, ripe, himsagar",
+    "calories_per_100g": 45,
+    "protein_per_100g": 0.46,
+    "carbs_per_100g": 9.03,
+    "fats_per_100g": 0.54
+  },
+  {
+    "id": "E039",
+    "name": "Mango, ripe, kesar",
+    "calories_per_100g": 55,
+    "protein_per_100g": 0.54,
+    "carbs_per_100g": 11.36,
+    "fats_per_100g": 0.57
+  },
+  {
+    "id": "E040",
+    "name": "Mango, ripe, neelam",
+    "calories_per_100g": 43,
+    "protein_per_100g": 0.68,
+    "carbs_per_100g": 8.21,
+    "fats_per_100g": 0.55
+  },
+  {
+    "id": "E041",
+    "name": "Mango, ripe, paheri",
+    "calories_per_100g": 45,
+    "protein_per_100g": 0.68,
+    "carbs_per_100g": 8.67,
+    "fats_per_100g": 0.58
+  },
+  {
+    "id": "E042",
+    "name": "Mango, ripe, totapari",
+    "calories_per_100g": 59,
+    "protein_per_100g": 0.41,
+    "carbs_per_100g": 12.75,
+    "fats_per_100g": 0.49
+  },
+  {
+    "id": "E043",
+    "name": "Mangosteen",
+    "calories_per_100g": 52,
+    "protein_per_100g": 0.63,
+    "carbs_per_100g": 11.41,
+    "fats_per_100g": 0.24
+  },
+  {
+    "id": "E044",
+    "name": "Manila tamarind",
+    "calories_per_100g": 82,
+    "protein_per_100g": 3.56,
+    "carbs_per_100g": 13.54,
+    "fats_per_100g": 1.14
+  },
+  {
+    "id": "E045",
+    "name": "Musk melon, orange flesh",
+    "calories_per_100g": 23,
+    "protein_per_100g": 0.42,
+    "carbs_per_100g": 4.24,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "E046",
+    "name": "Musk melon, yellow flesh",
+    "calories_per_100g": 28,
+    "protein_per_100g": 0.53,
+    "carbs_per_100g": 5.4,
+    "fats_per_100g": 0.26
+  },
+  {
+    "id": "E047",
+    "name": "Orange, pulp",
+    "calories_per_100g": 37,
+    "protein_per_100g": 0.7,
+    "carbs_per_100g": 7.92,
+    "fats_per_100g": 0.13
+  },
+  {
+    "id": "E048",
+    "name": "Palm fruit, tender",
+    "calories_per_100g": 24,
+    "protein_per_100g": 0.5,
+    "carbs_per_100g": 4.92,
+    "fats_per_100g": 0.12
+  },
+  {
+    "id": "E049",
+    "name": "Papaya, ripe",
+    "calories_per_100g": 24,
+    "protein_per_100g": 0.42,
+    "carbs_per_100g": 4.61,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "E050",
+    "name": "Peach",
+    "calories_per_100g": 40,
+    "protein_per_100g": 0.86,
+    "carbs_per_100g": 7.82,
+    "fats_per_100g": 0.37
+  },
+  {
+    "id": "E051",
+    "name": "Pear",
+    "calories_per_100g": 38,
+    "protein_per_100g": 0.36,
+    "carbs_per_100g": 8.09,
+    "fats_per_100g": 0.27
+  },
+  {
+    "id": "E052",
+    "name": "Phalsa",
+    "calories_per_100g": 71,
+    "protein_per_100g": 1.66,
+    "carbs_per_100g": 15.09,
+    "fats_per_100g": 0.14
+  },
+  {
+    "id": "E053",
+    "name": "Pineapple",
+    "calories_per_100g": 43,
+    "protein_per_100g": 0.52,
+    "carbs_per_100g": 9.42,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "E054",
+    "name": "Plum",
+    "calories_per_100g": 57,
+    "protein_per_100g": 0.64,
+    "carbs_per_100g": 12.1,
+    "fats_per_100g": 0.4
+  },
+  {
+    "id": "E055",
+    "name": "Pomegranate, maroon seeds",
+    "calories_per_100g": 55,
+    "protein_per_100g": 1.33,
+    "carbs_per_100g": 11.58,
+    "fats_per_100g": 0.15
+  },
+  {
+    "id": "E056",
+    "name": "Pummelo",
+    "calories_per_100g": 50,
+    "protein_per_100g": 0.68,
+    "carbs_per_100g": 10.64,
+    "fats_per_100g": 0.42
+  },
+  {
+    "id": "E057",
+    "name": "Raisins, dried, black",
+    "calories_per_100g": 306,
+    "protein_per_100g": 2.57,
+    "carbs_per_100g": 71.29,
+    "fats_per_100g": 0.34
+  },
+  {
+    "id": "E058",
+    "name": "Raisins, dried, golden",
+    "calories_per_100g": 297,
+    "protein_per_100g": 2.76,
+    "carbs_per_100g": 68.79,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "E059",
+    "name": "Rambutan",
+    "calories_per_100g": 73,
+    "protein_per_100g": 0.68,
+    "carbs_per_100g": 16.84,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "E060",
+    "name": "Sapota",
+    "calories_per_100g": 73,
+    "protein_per_100g": 0.92,
+    "carbs_per_100g": 13.9,
+    "fats_per_100g": 1.26
+  },
+  {
+    "id": "E061",
+    "name": "Soursop",
+    "calories_per_100g": 62,
+    "protein_per_100g": 0.74,
+    "carbs_per_100g": 11.94,
+    "fats_per_100g": 0.94
+  },
+  {
+    "id": "E062",
+    "name": "Star fruit",
+    "calories_per_100g": 26,
+    "protein_per_100g": 0.79,
+    "carbs_per_100g": 4.51,
+    "fats_per_100g": 0.39
+  },
+  {
+    "id": "E063",
+    "name": "Strawberry",
+    "calories_per_100g": 25,
+    "protein_per_100g": 0.97,
+    "carbs_per_100g": 3.4,
+    "fats_per_100g": 0.56
+  },
+  {
+    "id": "E064",
+    "name": "Tamarind, pulp",
+    "calories_per_100g": 288,
+    "protein_per_100g": 2.92,
+    "carbs_per_100g": 67.35,
+    "fats_per_100g": 0.15
+  },
+  {
+    "id": "E065",
+    "name": "Water melon, dark green (sugar baby)",
+    "calories_per_100g": 20,
+    "protein_per_100g": 0.6,
+    "carbs_per_100g": 3.86,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "E066",
+    "name": "Water melon, pale green",
+    "calories_per_100g": 17,
+    "protein_per_100g": 0.59,
+    "carbs_per_100g": 3.02,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "E067",
+    "name": "Wood Apple",
+    "calories_per_100g": 78,
+    "protein_per_100g": 3.14,
+    "carbs_per_100g": 7.52,
+    "fats_per_100g": 3.62
+  },
+  {
+    "id": "E068",
+    "name": "Zizyphus",
+    "calories_per_100g": 49,
+    "protein_per_100g": 1.34,
+    "carbs_per_100g": 9.4,
+    "fats_per_100g": 0.35
+  },
+  {
+    "id": "F001",
+    "name": "Beet root",
+    "calories_per_100g": 36,
+    "protein_per_100g": 1.95,
+    "carbs_per_100g": 6.18,
+    "fats_per_100g": 0.14
+  },
+  {
+    "id": "F002",
+    "name": "Carrot, orange",
+    "calories_per_100g": 33,
+    "protein_per_100g": 0.95,
+    "carbs_per_100g": 5.55,
+    "fats_per_100g": 0.47
+  },
+  {
+    "id": "F003",
+    "name": "Carrot, red",
+    "calories_per_100g": 38,
+    "protein_per_100g": 1.04,
+    "carbs_per_100g": 6.71,
+    "fats_per_100g": 0.47
+  },
+  {
+    "id": "F004",
+    "name": "Colocasia",
+    "calories_per_100g": 89,
+    "protein_per_100g": 3.31,
+    "carbs_per_100g": 17.85,
+    "fats_per_100g": 0.17
+  },
+  {
+    "id": "F005",
+    "name": "Lotus root",
+    "calories_per_100g": 79,
+    "protein_per_100g": 1.94,
+    "carbs_per_100g": 14.67,
+    "fats_per_100g": 0.93
+  },
+  {
+    "id": "F006",
+    "name": "Potato, brown skin, big",
+    "calories_per_100g": 70,
+    "protein_per_100g": 1.54,
+    "carbs_per_100g": 14.89,
+    "fats_per_100g": 0.23
+  },
+  {
+    "id": "F007",
+    "name": "Potato, brown skin, small",
+    "calories_per_100g": 61,
+    "protein_per_100g": 1.35,
+    "carbs_per_100g": 12.9,
+    "fats_per_100g": 0.22
+  },
+  {
+    "id": "F008",
+    "name": "Potato, red skin",
+    "calories_per_100g": 73,
+    "protein_per_100g": 1.83,
+    "carbs_per_100g": 15.43,
+    "fats_per_100g": 0.22
+  },
+  {
+    "id": "F009",
+    "name": "Radish, elongate, red skin",
+    "calories_per_100g": 32,
+    "protein_per_100g": 0.67,
+    "carbs_per_100g": 6.71,
+    "fats_per_100g": 0.13
+  },
+  {
+    "id": "Food Name",
+    "name": "Food code",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "F010",
+    "name": "Radish, elongate, white skin",
+    "calories_per_100g": 32,
+    "protein_per_100g": 0.77,
+    "carbs_per_100g": 6.56,
+    "fats_per_100g": 0.15
+  },
+  {
+    "id": "F011",
+    "name": "Radish, round, red skin",
+    "calories_per_100g": 31,
+    "protein_per_100g": 0.89,
+    "carbs_per_100g": 6.07,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "F012",
+    "name": "Radish, round, white skin",
+    "calories_per_100g": 31,
+    "protein_per_100g": 0.8,
+    "carbs_per_100g": 6.13,
+    "fats_per_100g": 0.14
+  },
+  {
+    "id": "F013",
+    "name": "Sweet potato, brown skin",
+    "calories_per_100g": 109,
+    "protein_per_100g": 1.33,
+    "carbs_per_100g": 24.25,
+    "fats_per_100g": 0.26
+  },
+  {
+    "id": "F014",
+    "name": "Sweet potato, pink skin",
+    "calories_per_100g": 108,
+    "protein_per_100g": 1.27,
+    "carbs_per_100g": 23.93,
+    "fats_per_100g": 0.33
+  },
+  {
+    "id": "F015",
+    "name": "Tapioca",
+    "calories_per_100g": 80,
+    "protein_per_100g": 1.03,
+    "carbs_per_100g": 17.81,
+    "fats_per_100g": 0.2
+  },
+  {
+    "id": "F016",
+    "name": "Water Chestnut",
+    "calories_per_100g": 96,
+    "protein_per_100g": 0.86,
+    "carbs_per_100g": 21.46,
+    "fats_per_100g": 0.37
+  },
+  {
+    "id": "F017",
+    "name": "Yam, elephant",
+    "calories_per_100g": 84,
+    "protein_per_100g": 2.56,
+    "carbs_per_100g": 17.46,
+    "fats_per_100g": 0.14
+  },
+  {
+    "id": "F018",
+    "name": "Yam, ordinary",
+    "calories_per_100g": 83,
+    "protein_per_100g": 2.18,
+    "carbs_per_100g": 17.65,
+    "fats_per_100g": 0.17
+  },
+  {
+    "id": "F019",
+    "name": "Yam, wild",
+    "calories_per_100g": 103,
+    "protein_per_100g": 3.07,
+    "carbs_per_100g": 20.95,
+    "fats_per_100g": 0.3
+  },
+  {
+    "id": "G001",
+    "name": "Chillies, green-1",
+    "calories_per_100g": 46,
+    "protein_per_100g": 2.62,
+    "carbs_per_100g": 6.32,
+    "fats_per_100g": 0.73
+  },
+  {
+    "id": "G002",
+    "name": "Chillies, green-2",
+    "calories_per_100g": 40,
+    "protein_per_100g": 2.28,
+    "carbs_per_100g": 5.27,
+    "fats_per_100g": 0.75
+  },
+  {
+    "id": "G003",
+    "name": "Chillies, green-3",
+    "calories_per_100g": 40,
+    "protein_per_100g": 2.38,
+    "carbs_per_100g": 5.23,
+    "fats_per_100g": 0.75
+  },
+  {
+    "id": "G004",
+    "name": "Chillies, green-4",
+    "calories_per_100g": 45,
+    "protein_per_100g": 2.33,
+    "carbs_per_100g": 6.63,
+    "fats_per_100g": 0.74
+  },
+  {
+    "id": "G005",
+    "name": "Chillies, green-5",
+    "calories_per_100g": 43,
+    "protein_per_100g": 2.01,
+    "carbs_per_100g": 6.64,
+    "fats_per_100g": 0.65
+  },
+  {
+    "id": "G006",
+    "name": "Chillies, green-6",
+    "calories_per_100g": 42,
+    "protein_per_100g": 3.01,
+    "carbs_per_100g": 5.31,
+    "fats_per_100g": 0.64
+  },
+  {
+    "id": "G007",
+    "name": "Chillies, green-7",
+    "calories_per_100g": 39,
+    "protein_per_100g": 2.12,
+    "carbs_per_100g": 5.61,
+    "fats_per_100g": 0.6
+  },
+  {
+    "id": "G008",
+    "name": "Chillies, green - all varieties",
+    "calories_per_100g": 42,
+    "protein_per_100g": 2.36,
+    "carbs_per_100g": 5.86,
+    "fats_per_100g": 0.72
+  },
+  {
+    "id": "G009",
+    "name": "Coriander leaves",
+    "calories_per_100g": 31,
+    "protein_per_100g": 3.52,
+    "carbs_per_100g": 1.93,
+    "fats_per_100g": 0.7
+  },
+  {
+    "id": "G010",
+    "name": "Curry leaves",
+    "calories_per_100g": 64,
+    "protein_per_100g": 7.41,
+    "carbs_per_100g": 4.51,
+    "fats_per_100g": 1.06
+  },
+  {
+    "id": "G011",
+    "name": "Garlic, big clove",
+    "calories_per_100g": 124,
+    "protein_per_100g": 6.92,
+    "carbs_per_100g": 21.93,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "G012",
+    "name": "Garlic, small clove",
+    "calories_per_100g": 123,
+    "protein_per_100g": 6.75,
+    "carbs_per_100g": 21.84,
+    "fats_per_100g": 0.14
+  },
+  {
+    "id": "G013",
+    "name": "Garlic, single clove, Kashmir",
+    "calories_per_100g": 125,
+    "protein_per_100g": 6.12,
+    "carbs_per_100g": 23.46,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "G014",
+    "name": "Ginger, fresh",
+    "calories_per_100g": 55,
+    "protein_per_100g": 2.22,
+    "carbs_per_100g": 8.97,
+    "fats_per_100g": 0.85
+  },
+  {
+    "id": "G015",
+    "name": "Mango ginger",
+    "calories_per_100g": 42,
+    "protein_per_100g": 1.45,
+    "carbs_per_100g": 6.98,
+    "fats_per_100g": 0.7
+  },
+  {
+    "id": "G016",
+    "name": "Mint leaves",
+    "calories_per_100g": 37,
+    "protein_per_100g": 4.66,
+    "carbs_per_100g": 2.39,
+    "fats_per_100g": 0.65
+  },
+  {
+    "id": "G017",
+    "name": "Onion, big",
+    "calories_per_100g": 48,
+    "protein_per_100g": 1.5,
+    "carbs_per_100g": 9.56,
+    "fats_per_100g": 0.24
+  },
+  {
+    "id": "G018",
+    "name": "Onion, small",
+    "calories_per_100g": 57,
+    "protein_per_100g": 1.82,
+    "carbs_per_100g": 11.58,
+    "fats_per_100g": 0.16
+  },
+  {
+    "id": "G019",
+    "name": "Asafoetida",
+    "calories_per_100g": 332,
+    "protein_per_100g": 6.34,
+    "carbs_per_100g": 71.95,
+    "fats_per_100g": 1.26
+  },
+  {
+    "id": "G020",
+    "name": "Cardamom, green",
+    "calories_per_100g": 255,
+    "protein_per_100g": 8.1,
+    "carbs_per_100g": 47.76,
+    "fats_per_100g": 2.6
+  },
+  {
+    "id": "G021",
+    "name": "Cardamom, black",
+    "calories_per_100g": 271,
+    "protein_per_100g": 6.69,
+    "carbs_per_100g": 52.53,
+    "fats_per_100g": 2.8
+  },
+  {
+    "id": "G022",
+    "name": "Chillies, red",
+    "calories_per_100g": 237,
+    "protein_per_100g": 12.69,
+    "carbs_per_100g": 29.46,
+    "fats_per_100g": 6.4
+  },
+  {
+    "id": "G023",
+    "name": "Cloves",
+    "calories_per_100g": 187,
+    "protein_per_100g": 5.86,
+    "carbs_per_100g": 18.73,
+    "fats_per_100g": 8.41
+  },
+  {
+    "id": "G024",
+    "name": "Coriander seeds",
+    "calories_per_100g": 269,
+    "protein_per_100g": 10.66,
+    "carbs_per_100g": 12.98,
+    "fats_per_100g": 17.47
+  },
+  {
+    "id": "G025",
+    "name": "Cumin seeds",
+    "calories_per_100g": 304,
+    "protein_per_100g": 13.91,
+    "carbs_per_100g": 22.62,
+    "fats_per_100g": 16.64
+  },
+  {
+    "id": "G026",
+    "name": "Fenugreek seeds",
+    "calories_per_100g": 235,
+    "protein_per_100g": 25.41,
+    "carbs_per_100g": 10.57,
+    "fats_per_100g": 5.72
+  },
+  {
+    "id": "G027",
+    "name": "Mace",
+    "calories_per_100g": 356,
+    "protein_per_100g": 6.24,
+    "carbs_per_100g": 26.51,
+    "fats_per_100g": 24.41
+  },
+  {
+    "id": "G028",
+    "name": "Nutmeg",
+    "calories_per_100g": 464,
+    "protein_per_100g": 6.3,
+    "carbs_per_100g": 27.64,
+    "fats_per_100g": 36.52
+  },
+  {
+    "id": "G029",
+    "name": "Omum",
+    "calories_per_100g": 357,
+    "protein_per_100g": 15.89,
+    "carbs_per_100g": 24.53,
+    "fats_per_100g": 21.11
+  },
+  {
+    "id": "G030",
+    "name": "Pippali",
+    "calories_per_100g": 217,
+    "protein_per_100g": 10.53,
+    "carbs_per_100g": 35.7,
+    "fats_per_100g": 2.27
+  },
+  {
+    "id": "G031",
+    "name": "Pepper, black",
+    "calories_per_100g": 217,
+    "protein_per_100g": 10.12,
+    "carbs_per_100g": 36.22,
+    "fats_per_100g": 2.74
+  },
+  {
+    "id": "G032",
+    "name": "Poppy seeds",
+    "calories_per_100g": 423,
+    "protein_per_100g": 20.31,
+    "carbs_per_100g": 12.37,
+    "fats_per_100g": 30.38
+  },
+  {
+    "id": "G033",
+    "name": "Turmeric powder",
+    "calories_per_100g": 281,
+    "protein_per_100g": 7.66,
+    "carbs_per_100g": 49.22,
+    "fats_per_100g": 5.03
+  },
+  {
+    "id": "H001",
+    "name": "Almond",
+    "calories_per_100g": 609,
+    "protein_per_100g": 18.41,
+    "carbs_per_100g": 3.04,
+    "fats_per_100g": 58.49
+  },
+  {
+    "id": "H002",
+    "name": "Arecanut, dried, brown",
+    "calories_per_100g": 351,
+    "protein_per_100g": 5.78,
+    "carbs_per_100g": 70.42,
+    "fats_per_100g": 4.35
+  },
+  {
+    "id": "H003",
+    "name": "Arecanut, dried, red color",
+    "calories_per_100g": 353,
+    "protein_per_100g": 6.46,
+    "carbs_per_100g": 70.27,
+    "fats_per_100g": 4.46
+  },
+  {
+    "id": "H004",
+    "name": "Arecanut, fresh",
+    "calories_per_100g": 245,
+    "protein_per_100g": 2.73,
+    "carbs_per_100g": 45,
+    "fats_per_100g": 5.51
+  },
+  {
+    "id": "H005",
+    "name": "Cashew nut",
+    "calories_per_100g": 583,
+    "protein_per_100g": 18.78,
+    "carbs_per_100g": 25.46,
+    "fats_per_100g": 45.2
+  },
+  {
+    "id": "H006",
+    "name": "Coconut, kernel, dry",
+    "calories_per_100g": 624,
+    "protein_per_100g": 7.27,
+    "carbs_per_100g": 8.01,
+    "fats_per_100g": 63.26
+  },
+  {
+    "id": "H007",
+    "name": "Coconut, kernel, fresh",
+    "calories_per_100g": 409,
+    "protein_per_100g": 3.84,
+    "carbs_per_100g": 6.3,
+    "fats_per_100g": 41.38
+  },
+  {
+    "id": "H008",
+    "name": "Garden cress, seeds",
+    "calories_per_100g": 445,
+    "protein_per_100g": 23.36,
+    "carbs_per_100g": 33.66,
+    "fats_per_100g": 23.74
+  },
+  {
+    "id": "H009",
+    "name": "Gingelly seeds, black",
+    "calories_per_100g": 508,
+    "protein_per_100g": 19.17,
+    "carbs_per_100g": 10.29,
+    "fats_per_100g": 43.1
+  },
+  {
+    "id": "H010",
+    "name": "Gingelly seeds, brown",
+    "calories_per_100g": 516,
+    "protein_per_100g": 21.61,
+    "carbs_per_100g": 9.76,
+    "fats_per_100g": 43.22
+  },
+  {
+    "id": "H011",
+    "name": "Gingelly seeds, white",
+    "calories_per_100g": 520,
+    "protein_per_100g": 21.7,
+    "carbs_per_100g": 10.83,
+    "fats_per_100g": 43.05
+  },
+  {
+    "id": "H012",
+    "name": "Ground nut",
+    "calories_per_100g": 520,
+    "protein_per_100g": 23.65,
+    "carbs_per_100g": 17.27,
+    "fats_per_100g": 39.63
+  },
+  {
+    "id": "H013",
+    "name": "Mustard seeds",
+    "calories_per_100g": 510,
+    "protein_per_100g": 19.51,
+    "carbs_per_100g": 16.8,
+    "fats_per_100g": 40.19
+  },
+  {
+    "id": "H014",
+    "name": "Linseeds",
+    "calories_per_100g": 444,
+    "protein_per_100g": 18.55,
+    "carbs_per_100g": 10.99,
+    "fats_per_100g": 35.67
+  },
+  {
+    "id": "H015",
+    "name": "Niger seeds, black",
+    "calories_per_100g": 512,
+    "protein_per_100g": 18.92,
+    "carbs_per_100g": 22.98,
+    "fats_per_100g": 38.61
+  },
+  {
+    "id": "Food Name",
+    "name": "Food code",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "H016",
+    "name": "Niger seeds, gray",
+    "calories_per_100g": 509,
+    "protein_per_100g": 18.34,
+    "carbs_per_100g": 20.59,
+    "fats_per_100g": 39.53
+  },
+  {
+    "id": "H017",
+    "name": "Pine seed",
+    "calories_per_100g": 594,
+    "protein_per_100g": 12.55,
+    "carbs_per_100g": 26.77,
+    "fats_per_100g": 48.79
+  },
+  {
+    "id": "H018",
+    "name": "Pistachio nuts",
+    "calories_per_100g": 539,
+    "protein_per_100g": 23.35,
+    "carbs_per_100g": 15.82,
+    "fats_per_100g": 42.49
+  },
+  {
+    "id": "H019",
+    "name": "Safflower seeds",
+    "calories_per_100g": 473,
+    "protein_per_100g": 17.66,
+    "carbs_per_100g": 30.18,
+    "fats_per_100g": 30.87
+  },
+  {
+    "id": "H020",
+    "name": "Sunflower seeds",
+    "calories_per_100g": 586,
+    "protein_per_100g": 23.53,
+    "carbs_per_100g": 6.85,
+    "fats_per_100g": 51.85
+  },
+  {
+    "id": "H021",
+    "name": "Walnut",
+    "calories_per_100g": 671,
+    "protein_per_100g": 14.92,
+    "carbs_per_100g": 10.14,
+    "fats_per_100g": 64.27
+  },
+  {
+    "id": "I002",
+    "name": "Sugarcane, juice",
+    "calories_per_100g": 58,
+    "protein_per_100g": 0.16,
+    "carbs_per_100g": 13.11,
+    "fats_per_100g": 0.4
+  },
+  {
+    "id": "Food Name",
+    "name": "Food code",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "Food Code",
+    "name": "Food Name",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "Food Code",
+    "name": "Food Name",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "R001",
+    "name": "R002",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 1,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "No. of Regions",
+    "name": "Food Code",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "C004",
+    "name": "C005",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 2,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "Food Code",
+    "name": "Food Name",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "Food Code",
+    "name": "Fish Name",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "S002",
+    "name": "S003",
+    "calories_per_100g": 1,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 6,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "Food code",
+    "name": "Food Name",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "Food code",
+    "name": "Food Name",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "Food code",
+    "name": "Food Name",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "Food code",
+    "name": "Food Name",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "G019",
+    "name": "G020",
+    "calories_per_100g": 1,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 6,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "Food code",
+    "name": "Food Name",
+    "calories_per_100g": 0,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fats_per_100g": 0
+  },
+  {
+    "id": "F001",
+    "name": "F002",
+    "calories_per_100g": 1,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 6,
+    "fats_per_100g": 0
+  }
+]

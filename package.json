@@ -1,0 +1,15 @@
+{
+  "name": "nourishsnap-ai",
+  "version": "1.0.0",
+  "description": "NourishSnap AI — Advanced Indian Food Analytics Platform (PWA)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview --host"
+  },
+  "devDependencies": {
+    "vite": "^6.3.0",
+    "vite-plugin-pwa": "^0.21.0"
+  }
+}

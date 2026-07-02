@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#4A6B52">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="NourishSnap">
+  <meta name="description" content="NourishSnap AI — Snap a photo of your Indian meal and get instant, accurate nutrition data powered by AI.">
+
+  <title>NourishSnap AI</title>
+
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="icon" type="image/png" href="./icons/icon-192.png">
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- CAMERA VIEWPORT — Top 70% of screen            -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <section id="camera-viewport" class="camera-viewport">
+      <video id="camera-stream" autoplay playsinline muted></video>
+      <canvas id="capture-canvas" class="hidden"></canvas>
+
+      <!-- Captured image preview (shown after snap) -->
+      <img id="captured-preview" class="captured-preview hidden" alt="Captured meal photo">
+
+      <!-- Processing overlay -->
+      <div id="processing-overlay" class="processing-overlay hidden">
+        <div class="processing-spinner">
+          <div class="spinner-ring"></div>
+          <span class="processing-text">Analyzing your meal…</span>
+        </div>
+      </div>
+
+      <!-- Camera error / permission denied fallback -->
+      <div id="camera-fallback" class="camera-fallback hidden">
+        <div class="fallback-content">
+          <svg class="fallback-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+          <p class="fallback-text">Camera access unavailable</p>
+          <label id="file-upload-label" class="file-upload-btn" for="file-upload-input">
+            Upload a Photo
+          </label>
+          <input type="file" id="file-upload-input" accept="image/*" capture="environment" class="hidden">
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SHUTTER & CONTROLS — Bottom fixed area         -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <section id="controls-bar" class="controls-bar">
+      <!-- Meal context badge -->
+      <div id="context-badge" class="context-badge">
+        <span id="context-icon" class="context-icon">☀️</span>
+        <span id="context-label" class="context-label">Breakfast</span>
+      </div>
+
+      <!-- Shutter button -->
+      <button id="shutter-btn" class="shutter-btn-outer-ring" aria-label="Capture meal photo">
+        <span class="shutter-btn-inner-core"></span>
+      </button>
+
+      <!-- Gallery / history shortcut -->
+      <button id="history-btn" class="history-btn" aria-label="View meal history">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+      </button>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- RETAKE BAR — Shown after capture                -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <section id="retake-bar" class="retake-bar hidden">
+      <button id="retake-btn" class="retake-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+        </svg>
+        Retake
+      </button>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SLIDE-UP ANALYTICS PANEL — Bottom sheet         -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <section id="analytics-panel" class="bottom-sliding-analytics-panel hidden">
+      <!-- Drag handle -->
+      <div class="panel-drag-handle">
+        <span class="drag-bar"></span>
+      </div>
+
+      <!-- Total macro summary row -->
+      <div id="macro-summary" class="macro-summary-row">
+        <div class="macro-metric-badge-pill" id="badge-calories">
+          <span class="macro-metric-numeric-bold" id="total-calories">0</span>
+          <span class="macro-metric-label-muted">Calories</span>
+        </div>
+        <div class="macro-metric-badge-pill" id="badge-protein">
+          <span class="macro-metric-numeric-bold" id="total-protein">0g</span>
+          <span class="macro-metric-label-muted">Protein</span>
+        </div>
+        <div class="macro-metric-badge-pill" id="badge-carbs">
+          <span class="macro-metric-numeric-bold" id="total-carbs">0g</span>
+          <span class="macro-metric-label-muted">Carbs</span>
+        </div>
+        <div class="macro-metric-badge-pill" id="badge-fats">
+          <span class="macro-metric-numeric-bold" id="total-fats">0g</span>
+          <span class="macro-metric-label-muted">Fats</span>
+        </div>
+      </div>
+
+      <!-- Food items list -->
+      <div id="food-items-list" class="food-items-list">
+        <!-- Food cards injected dynamically by JS -->
+      </div>
+
+      <!-- Shadow ingredient prompt (hidden fat) -->
+      <div id="shadow-oil-prompt" class="shadow-oil-prompt-callout-badge hidden">
+        <span class="shadow-oil-icon">🫒</span>
+        <span id="shadow-oil-text" class="shadow-oil-text">Assumed 1.5 tbsp Ghee/Oil used. Tap to alter.</span>
+        <button id="shadow-oil-edit-btn" class="shadow-oil-edit-btn" aria-label="Edit cooking fat">✎</button>
+      </div>
+
+      <!-- Log meal button -->
+      <button id="log-meal-btn" class="log-meal-btn">
+        <span class="log-meal-icon">✓</span>
+        Log This Meal
+      </button>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- MEAL HISTORY DRAWER                             -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <section id="history-drawer" class="history-drawer hidden">
+      <div class="history-header">
+        <h2 class="history-title">Today's Log</h2>
+        <button id="history-close-btn" class="history-close-btn" aria-label="Close history">✕</button>
+      </div>
+      <div id="daily-progress" class="daily-progress">
+        <div class="progress-ring-container">
+          <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle class="progress-ring-bg" cx="60" cy="60" r="52"/>
+            <circle id="progress-ring-fill" class="progress-ring-fill" cx="60" cy="60" r="52"/>
+          </svg>
+          <div class="progress-ring-text">
+            <span id="calories-consumed" class="progress-calories">0</span>
+            <span class="progress-label">of <span id="calories-target">2000</span></span>
+          </div>
+        </div>
+      </div>
+      <div id="history-list" class="history-list">
+        <!-- Logged meals injected dynamically -->
+      </div>
+    </section>
+
+    <!-- Backdrop overlay for panels -->
+    <div id="backdrop" class="backdrop hidden"></div>
+
+  </div>
+
+  <!-- App scripts (ESM) -->
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "katori-small",
+    "name": "Standard Home Katori",
+    "description": "Small stainless steel bowl (~150ml), most common in Indian households",
+    "estimated_volume_ml": 150,
+    "typical_food_weight_g": 150,
+    "profile_type": "bowl"
+  },
+  {
+    "id": "katori-large",
+    "name": "Large Katori / Vati",
+    "description": "Larger serving bowl (~250ml)",
+    "estimated_volume_ml": 250,
+    "typical_food_weight_g": 250,
+    "profile_type": "bowl"
+  },
+  {
+    "id": "thali-plate",
+    "name": "Thali Plate (Standard)",
+    "description": "Standard stainless steel thali plate (10-12 inch diameter)",
+    "estimated_volume_ml": null,
+    "typical_food_weight_g": 300,
+    "profile_type": "plate"
+  },
+  {
+    "id": "dinner-plate",
+    "name": "Dinner Plate",
+    "description": "Standard ceramic or melamine dinner plate (10 inch)",
+    "estimated_volume_ml": null,
+    "typical_food_weight_g": 300,
+    "profile_type": "plate"
+  },
+  {
+    "id": "quarter-plate",
+    "name": "Quarter Plate",
+    "description": "Small side plate (6-7 inch)",
+    "estimated_volume_ml": null,
+    "typical_food_weight_g": 100,
+    "profile_type": "plate"
+  },
+  {
+    "id": "serving-handi",
+    "name": "Serving Handi",
+    "description": "Traditional clay or metal pot used in restaurants for curries",
+    "estimated_volume_ml": 500,
+    "typical_food_weight_g": 400,
+    "profile_type": "pot"
+  },
+  {
+    "id": "steel-glass",
+    "name": "Steel Tumbler / Glass",
+    "description": "Standard stainless steel drinking glass (~250ml)",
+    "estimated_volume_ml": 250,
+    "typical_food_weight_g": 250,
+    "profile_type": "glass"
+  },
+  {
+    "id": "chai-cup",
+    "name": "Chai Cup (Kulhad/Ceramic)",
+    "description": "Small tea cup or kulhad (~100-150ml)",
+    "estimated_volume_ml": 120,
+    "typical_food_weight_g": 120,
+    "profile_type": "cup"
+  },
+  {
+    "id": "tiffin-box",
+    "name": "Tiffin Box Compartment",
+    "description": "Standard tiffin / dabba compartment",
+    "estimated_volume_ml": 200,
+    "typical_food_weight_g": 180,
+    "profile_type": "container"
+  },
+  {
+    "id": "banana-leaf",
+    "name": "Banana Leaf (Meals)",
+    "description": "Traditional South Indian banana leaf serving",
+    "estimated_volume_ml": null,
+    "typical_food_weight_g": 500,
+    "profile_type": "leaf"
+  },
+  {
+    "id": "serving-ladle",
+    "name": "Serving Ladle (Karchi)",
+    "description": "Standard metal serving ladle (~120ml)",
+    "estimated_volume_ml": 120,
+    "typical_food_weight_g": 120,
+    "profile_type": "utensil"
+  },
+  {
+    "id": "restaurant-bowl",
+    "name": "Restaurant Curry Bowl",
+    "description": "Deep restaurant-style curry serving bowl (~300ml)",
+    "estimated_volume_ml": 300,
+    "typical_food_weight_g": 280,
+    "profile_type": "bowl"
+  }
+]
