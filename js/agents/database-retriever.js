@@ -5,18 +5,23 @@
  */
 
 let foodDictionary = null;
+let icmrDatabase = null;
 
 /**
- * Load the food dictionary JSON.
+ * Load the food dictionary and raw ICMR database JSON.
  */
 async function ensureDictionary() {
-  if (foodDictionary) return;
+  if (foodDictionary && icmrDatabase) return;
   try {
-    const res = await fetch('/js/data/food-dictionary.json');
-    foodDictionary = await res.json();
+    const resFood = await fetch('/js/data/food-dictionary.json');
+    foodDictionary = await resFood.json();
+    
+    const resIcmr = await fetch('/js/data/icmr-database.json');
+    icmrDatabase = await resIcmr.json();
   } catch (err) {
-    console.error('Failed to load food dictionary:', err);
+    console.error('Failed to load databases:', err);
     foodDictionary = [];
+    icmrDatabase = [];
   }
 }
 
@@ -136,7 +141,42 @@ function findBestMatch(foodName) {
     }
   }
 
-  return bestEntry;
+  if (bestEntry) return bestEntry;
+
+  // 5. Fallback to raw ICMR database if no match found
+  if (icmrDatabase) {
+    let bestIcmrScore = 0;
+    let bestIcmrEntry = null;
+
+    for (const entry of icmrDatabase) {
+      if (!entry.name) continue;
+      const entryTokens = entry.name.toLowerCase().split(/[\s,]+/);
+      
+      const overlap = nameTokens.filter((t) =>
+        entryTokens.some((et) => et.includes(t) || t.includes(et))
+      ).length;
+
+      // Higher threshold for ICMR since names are complex
+      const score = overlap / Math.max(nameTokens.length, 1);
+      if (score > bestIcmrScore && score >= 0.5) {
+        bestIcmrScore = score;
+        bestIcmrEntry = entry;
+      }
+    }
+    
+    if (bestIcmrEntry) {
+       // Normalize icmr entry to match food-dictionary structure
+       return {
+         ...bestIcmrEntry,
+         standard_name: bestIcmrEntry.name,
+         household_unit_label: 'grams',
+         household_unit_weight_g: 100,
+         fiber_per_100g: 0
+       };
+    }
+  }
+
+  return null;
 }
 
 /**
