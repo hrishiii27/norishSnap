@@ -53,7 +53,7 @@ export async function enrichWithNutrition(parsedItems) {
     } else {
       // Fallback: rough estimate when no dictionary match
       calories = Math.round(weight * 1.5); // ~150 cal per 100g default
-      protein = +(weight * 0.08).toFixed(1);
+      protein = +(weight * 0.04).toFixed(1); // Reduced from 0.08 to 0.04 to prevent ~5g overestimation
       carbs = +(weight * 0.2).toFixed(1);
       fats = +(weight * 0.05).toFixed(1);
       fiber = 0;

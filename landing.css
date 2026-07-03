@@ -92,6 +92,138 @@
   background-color: #1a1a1a;
 }
 
+.landing-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--space-lg) var(--space-2xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: 700;
+  color: var(--botanical-sage);
+  font-size: var(--fs-heading);
+}
+
+.landing-hero-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .landing-hero-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.landing-text-content {
+  flex: 1;
+  text-align: left;
+}
+
+.landing-features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 500;
+  color: var(--deep-bark);
+  font-size: var(--fs-body);
+}
+
+.feature-icon {
+  font-size: 1.5rem;
+}
+
+.landing-auth-card {
+  flex: 1;
+  max-width: 400px;
+  background: var(--surface-card);
+  padding: var(--space-2xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.landing-auth-card h2 {
+  text-align: center;
+  font-size: var(--fs-heading);
+  color: var(--botanical-sage);
+}
+
+.email-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.auth-input {
+  width: 100%;
+  padding: var(--space-md);
+  border: 1px solid var(--taupe-25);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--fs-body);
+}
+
+.auth-btn-group {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.email-btn {
+  background-color: var(--botanical-sage);
+  color: white;
+}
+
+.email-btn.secondary {
+  background-color: white;
+  color: var(--botanical-sage);
+  border: 1px solid var(--botanical-sage);
+}
+
+.auth-divider {
+  text-align: center;
+  position: relative;
+  color: var(--taupe-gray);
+  font-size: var(--fs-label);
+}
+
+.auth-divider::before, .auth-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: var(--taupe-25);
+}
+
+.auth-divider::before {
+  left: 0;
+}
+
+.auth-divider::after {
+  right: 0;
+}
+
 /* Base App view handling */
 .app-view {
   height: 100%;

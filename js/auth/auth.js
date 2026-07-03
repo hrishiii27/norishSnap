@@ -15,6 +15,16 @@ export async function signInWithApple() {
   return supabase.auth.signInWithOAuth({ provider: 'apple' });
 }
 
+export async function signUpWithEmail(email, password) {
+  if (!supabase) return alert("Supabase not configured");
+  return supabase.auth.signUp({ email, password });
+}
+
+export async function signInWithEmail(email, password) {
+  if (!supabase) return alert("Supabase not configured");
+  return supabase.auth.signInWithPassword({ email, password });
+}
+
 export async function signOut() {
   if (supabase) await supabase.auth.signOut();
 }

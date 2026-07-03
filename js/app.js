@@ -21,11 +21,12 @@ import {
   getOrCreateLocalUser,
   logMeal,
   getTodayMeals,
+  getAllMeals,
   getTodayTotals,
   updateMealEnergy,
   subtractLeftovers,
 } from './data/db.js';
-import { getSession, signInWithGoogle, signInWithApple, onAuthStateChange, signOut } from './auth/auth.js';
+import { getSession, signInWithGoogle, signInWithApple, onAuthStateChange, signOut, signInWithEmail, signUpWithEmail } from './auth/auth.js';
 
 // ── App State ──
 const state = {
@@ -46,6 +47,12 @@ const dom = {
   btnGoogle:        document.getElementById('btn-login-google'),
   btnApple:         document.getElementById('btn-login-apple'),
   
+  // Email Auth
+  authEmail:        document.getElementById('auth-email'),
+  authPassword:     document.getElementById('auth-password'),
+  btnLoginEmail:    document.getElementById('btn-login-email'),
+  btnSignupEmail:   document.getElementById('btn-signup-email'),
+  
   // Camera & Placeholder
   cameraPlaceholder: document.getElementById('camera-placeholder'),
   btnStartCamera:    document.getElementById('btn-start-camera'),
@@ -64,6 +71,8 @@ const dom = {
   analyticsPanel:   document.getElementById('analytics-panel'),
   backdrop:         document.getElementById('backdrop'),
   foodItemsList:    document.getElementById('food-items-list'),
+  addItemBtn:       document.getElementById('add-item-btn'),
+  macroSummary:     document.getElementById('macro-summary'),
   logMealBtn:       document.getElementById('log-meal-btn'),
 
   // Thali Share Mode
@@ -145,6 +154,23 @@ function bindEvents() {
   // Auth
   if (dom.btnGoogle) dom.btnGoogle.addEventListener('click', signInWithGoogle);
   if (dom.btnApple) dom.btnApple.addEventListener('click', signInWithApple);
+  
+  if (dom.btnLoginEmail) dom.btnLoginEmail.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (dom.authEmail.value && dom.authPassword.value) {
+      const { error } = await signInWithEmail(dom.authEmail.value, dom.authPassword.value);
+      if (error) alert(error.message);
+    }
+  });
+
+  if (dom.btnSignupEmail) dom.btnSignupEmail.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (dom.authEmail.value && dom.authPassword.value) {
+      const { error } = await signUpWithEmail(dom.authEmail.value, dom.authPassword.value);
+      if (error) alert(error.message);
+      else alert('Check your email for the confirmation link!');
+    }
+  });
 
   // Camera Toggle
   if (dom.btnStartCamera) {
@@ -158,6 +184,28 @@ function bindEvents() {
   // Audio Snap
   if (dom.btnAudioSnap) {
     dom.btnAudioSnap.addEventListener('click', handleAudioSnap);
+  }
+
+  // Add custom item manually
+  if (dom.addItemBtn) {
+    dom.addItemBtn.addEventListener('click', () => {
+      const newItem = {
+        food_name_raw: 'Custom Food',
+        weight_grams: 100,
+        calories: 150,
+        protein: 4.0,
+        carbs: 20.0,
+        fats: 5.0,
+        confidence_score: 1.0,
+        was_ai_predicted: false,
+        display_unit: 'grams',
+        household_unit: 'serving',
+        household_unit_weight_g: 100
+      };
+      state.currentItems.push(newItem);
+      renderFoodItems(state.currentItems);
+      updateMacroTotals();
+    });
   }
 
   // Gallery Upload
@@ -435,8 +483,16 @@ function createFoodCard(item, index) {
       </div>
     </div>
     <div class="food-card-right">
-      <span class="food-card-calories">${item.calories}</span>
-      <span class="food-card-cal-label">kcal</span>
+      <div class="food-card-macros">
+        <span class="food-card-calories">${item.calories}</span>
+        <span class="food-card-cal-label">kcal</span>
+      </div>
+      <button class="delete-item-btn" data-index="${index}" aria-label="Delete item">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+      </button>
     </div>
   `;
 
@@ -467,6 +523,14 @@ function createFoodCard(item, index) {
       updated.household_unit_weight_g,
       updated.display_unit
     );
+  });
+
+  // Event: delete item
+  const deleteBtn = card.querySelector('.delete-item-btn');
+  deleteBtn.addEventListener('click', () => {
+    state.currentItems.splice(index, 1);
+    renderFoodItems(state.currentItems);
+    updateMacroTotals();
   });
 
   return card;
@@ -631,7 +695,7 @@ async function handleLogMeal() {
 // ═══════════════════════════════════════════════════════════
 
 async function showHistory() {
-  const todayMeals = await getTodayMeals(state.user.id);
+  const allMeals = await getAllMeals(state.user.id);
   const totals = await getTodayTotals(state.user.id);
 
   // Update progress ring
@@ -645,7 +709,7 @@ async function showHistory() {
   // Render meal history
   dom.historyList.innerHTML = '';
 
-  if (todayMeals.length === 0) {
+  if (allMeals.length === 0) {
     dom.historyList.innerHTML = `
       <div class="empty-state">
         <div class="empty-state-icon">📸</div>
@@ -653,8 +717,23 @@ async function showHistory() {
       </div>
     `;
   } else {
-    todayMeals.forEach((meal) => {
-      const time = new Date(meal.logged_at).toLocaleTimeString('en-IN', {
+    let lastDateStr = null;
+    allMeals.forEach((meal) => {
+      const mealDate = new Date(meal.logged_at);
+      const dateStr = mealDate.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
+      
+      if (dateStr !== lastDateStr) {
+        const dateHeader = document.createElement('h3');
+        dateHeader.className = 'history-date-header';
+        dateHeader.textContent = dateStr;
+        dateHeader.style.marginTop = '16px';
+        dateHeader.style.marginBottom = '8px';
+        dateHeader.style.color = 'var(--text-secondary)';
+        dom.historyList.appendChild(dateHeader);
+        lastDateStr = dateStr;
+      }
+
+      const time = mealDate.toLocaleTimeString('en-IN', {
         hour: '2-digit',
         minute: '2-digit',
       });

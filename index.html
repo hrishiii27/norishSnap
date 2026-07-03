@@ -23,22 +23,58 @@
     <!-- LANDING VIEW (Unauthenticated)                  -->
     <!-- ═══════════════════════════════════════════════ -->
     <section id="landing-view" class="landing-view">
-      <div class="landing-hero">
-        <h1 class="landing-title">
-          <span>Indian Meals you don't</span>
-          <span class="landing-title-highlight">have to Second Guess</span>
-        </h1>
-        <p class="landing-subtitle">Only trusted, tested, and tracked nutrition.</p>
-        
-        <div class="landing-auth-buttons">
-          <button id="btn-login-google" class="auth-btn google-btn">
-            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/><path d="M1 1h22v22H1z" fill="none"/></svg>
-            Continue with Google
-          </button>
-          <button id="btn-login-apple" class="auth-btn apple-btn">
-            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.174 14.364c-.66.302-1.411.458-2.193.458-2.52 0-4.646-1.79-5.228-4.22-.093-.39-.142-.797-.142-1.218 0-.421.049-.828.142-1.218.582-2.43 2.708-4.22 5.228-4.22.782 0 1.533.156 2.193.458l-1.077 1.83c-.347-.146-.723-.222-1.116-.222-1.523 0-2.825 1.054-3.197 2.493-.058.225-.088.461-.088.704 0 .243.03.479.088.704.372 1.439 1.674 2.493 3.197 2.493.393 0 .769-.076 1.116-.222l1.077 1.83z" fill="#fff" opacity="0"/></svg>
-            Continue with Apple
-          </button>
+      <nav class="landing-nav">
+        <div class="logo">NourishSnap AI</div>
+      </nav>
+      
+      <div class="landing-hero-container">
+        <div class="landing-text-content">
+          <h1 class="landing-title">
+            <span>Indian Meals you don't</span>
+            <span class="landing-title-highlight">have to Second Guess</span>
+          </h1>
+          <p class="landing-subtitle">The first AI nutrition tracker built specifically for the complexities of Indian cuisine. Scan thalis, curries, and dals with unprecedented accuracy.</p>
+          
+          <div class="landing-features">
+            <div class="feature-item">
+              <span class="feature-icon">📸</span>
+              <span>Instant Vision AI Parsing</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🎙️</span>
+              <span>Voice Log (Audio Snap)</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🍲</span>
+              <span>Native ICMR Database</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="landing-auth-card">
+          <h2>Get Started</h2>
+          
+          <form id="email-auth-form" class="email-auth-form">
+            <input type="email" id="auth-email" placeholder="Email address" required class="auth-input">
+            <input type="password" id="auth-password" placeholder="Password" required class="auth-input">
+            <div class="auth-btn-group">
+              <button type="button" id="btn-login-email" class="auth-btn email-btn">Sign In</button>
+              <button type="button" id="btn-signup-email" class="auth-btn email-btn secondary">Sign Up</button>
+            </div>
+          </form>
+
+          <div class="auth-divider"><span>OR</span></div>
+          
+          <div class="landing-auth-buttons">
+            <button id="btn-login-google" class="auth-btn google-btn">
+              <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/><path d="M1 1h22v22H1z" fill="none"/></svg>
+              Continue with Google
+            </button>
+            <button id="btn-login-apple" class="auth-btn apple-btn">
+              <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.174 14.364c-.66.302-1.411.458-2.193.458-2.52 0-4.646-1.79-5.228-4.22-.093-.39-.142-.797-.142-1.218 0-.421.049-.828.142-1.218.582-2.43 2.708-4.22 5.228-4.22.782 0 1.533.156 2.193.458l-1.077 1.83c-.347-.146-.723-.222-1.116-.222-1.523 0-2.825 1.054-3.197 2.493-.058.225-.088.461-.088.704 0 .243.03.479.088.704.372 1.439 1.674 2.493 3.197 2.493.393 0 .769-.076 1.116-.222l1.077 1.83z" fill="#fff" opacity="0"/></svg>
+              Continue with Apple
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -194,6 +230,10 @@
       <div id="food-items-list" class="food-items-list">
         <!-- Food cards injected dynamically by JS -->
       </div>
+      
+      <button id="add-item-btn" class="add-item-btn action-btn secondary" style="margin: 16px; width: calc(100% - 32px);">
+        + Add Item
+      </button>
 
       <!-- Shadow ingredient prompt (hidden fat) -->
       <div id="shadow-oil-prompt" class="shadow-oil-prompt-callout-badge hidden">
@@ -225,7 +265,7 @@
     <!-- ═══════════════════════════════════════════════ -->
     <section id="history-drawer" class="history-drawer hidden">
       <div class="history-header">
-        <h2 class="history-title">Today's Log</h2>
+        <h2 class="history-title">Profile & All Meals</h2>
         <button id="history-close-btn" class="history-close-btn" aria-label="Close history">✕</button>
       </div>
       <div id="daily-progress" class="daily-progress">

@@ -240,6 +240,51 @@ export async function getTodayMeals(userId) {
   });
 }
 
+/** Get all historical meals */
+export async function getAllMeals(userId) {
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('meal_logs')
+        .select(`
+          *,
+          items:meal_log_items(*)
+        `)
+        .eq('user_id', userId)
+        .order('logged_at', { ascending: false });
+
+      if (!error && data) return data;
+    } catch (err) {
+      console.warn('Supabase fetch failed, falling back to local:', err);
+    }
+  }
+
+  // Local fetch
+  const db = await openDB();
+  const tx = db.transaction([STORES.MEAL_LOGS, STORES.MEAL_LOG_ITEMS], 'readonly');
+  const logsStore = tx.objectStore(STORES.MEAL_LOGS);
+
+  return new Promise((resolve) => {
+    const request = logsStore.index('user_id').getAll(userId);
+    request.onsuccess = async () => {
+      const allLogs = request.result;
+      allLogs.sort((a, b) => new Date(b.logged_at) - new Date(a.logged_at));
+
+      const itemsStore = tx.objectStore(STORES.MEAL_LOG_ITEMS);
+      for (const log of allLogs) {
+        const itemsReq = itemsStore.index('meal_log_id').getAll(log.id);
+        await new Promise((res) => {
+          itemsReq.onsuccess = () => {
+            log.items = itemsReq.result;
+            res();
+          };
+        });
+      }
+      resolve(allLogs);
+    };
+  });
+}
+
 /** Get today's total macros */
 export async function getTodayTotals(userId) {
   const meals = await getTodayMeals(userId);
