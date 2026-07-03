@@ -12,7 +12,7 @@ let foodDictionary = null;
 async function ensureDictionary() {
   if (foodDictionary) return;
   try {
-    const res = await fetch('/js/data/icmr-database.json');
+    const res = await fetch('/js/data/food-dictionary.json');
     foodDictionary = await res.json();
   } catch (err) {
     console.error('Failed to load food dictionary:', err);
