@@ -59,6 +59,7 @@ const dom = {
   btnAudioSnap:      document.getElementById('btn-audio-snap'),
   galleryInput:      document.getElementById('gallery-upload-input'),
   cameraStream:      document.getElementById('camera-stream'),
+  btnCloseCamera:    document.getElementById('btn-close-camera'),
 
   listeningOverlay: document.getElementById('listening-overlay'),
   listeningText:    document.getElementById('listening-text'),
@@ -177,7 +178,18 @@ function bindEvents() {
     dom.btnStartCamera.addEventListener('click', async () => {
       dom.cameraPlaceholder.classList.add('hidden');
       dom.cameraStream.classList.remove('hidden');
+      if (dom.btnCloseCamera) dom.btnCloseCamera.classList.remove('hidden');
       await camera.start();
+    });
+  }
+
+  // Close Camera Toggle
+  if (dom.btnCloseCamera) {
+    dom.btnCloseCamera.addEventListener('click', () => {
+      camera.stop();
+      dom.cameraStream.classList.add('hidden');
+      dom.btnCloseCamera.classList.add('hidden');
+      dom.cameraPlaceholder.classList.remove('hidden');
     });
   }
 

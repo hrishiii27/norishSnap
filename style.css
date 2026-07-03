@@ -945,14 +945,14 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: var(--surface-default);
+  background-color: #121212;
   z-index: 5;
 }
 
 .camera-placeholder-text {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--deep-bark);
+  color: #FFFFFF;
   margin-bottom: 24px;
 }
 
@@ -980,9 +980,9 @@ body {
 }
 
 .action-btn.secondary {
-  background-color: var(--surface-default);
-  color: var(--botanical-sage);
-  border: 1px solid var(--border-subtle);
+  background-color: transparent;
+  color: #A3C9AE; /* light sage */
+  border: 1px solid rgba(163, 201, 174, 0.3);
 }
 
 .action-btn:active {
@@ -991,9 +991,9 @@ body {
 
 /* Audio Snap Button */
 .audio-btn {
-  background-color: var(--surface-default);
-  color: var(--deep-bark);
-  border: 1px solid var(--border-subtle);
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1005,7 +1005,24 @@ body {
 }
 
 .audio-btn:hover {
-  background-color: #f1f3f0;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.close-camera-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 20;
 }
 
 /* Listening waves animation */
