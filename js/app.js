@@ -25,6 +25,7 @@ import {
   getTodayTotals,
   updateMealEnergy,
   subtractLeftovers,
+  deleteMeal,
 } from './data/db.js';
 import { getSession, signInWithGoogle, signInWithApple, onAuthStateChange, signOut, signInWithEmail, signUpWithEmail } from './auth/auth.js';
 
@@ -518,6 +519,7 @@ function createFoodCard(item, index) {
       if (newName && newName !== item.food_name_raw) {
         const updated = await handleNameChange(state.currentItems[index], newName);
         state.currentItems[index] = updated;
+        item.food_name_raw = newName; // Update local reference so subsequent edits work correctly
         updateCardDisplay(card, updated);
         updateMacroTotals();
       }
@@ -780,6 +782,7 @@ async function showHistory() {
         <div class="history-meal-right">
           <span class="history-meal-cals">${meal.total_calculated_calories} kcal</span>
           ${!meal.has_leftover_subtracted ? `<button class="scan-leftover-btn" data-meal="${meal.id}">📉 Leftover?</button>` : ''}
+          <button class="delete-history-btn" data-meal="${meal.id}" aria-label="Delete Meal">🗑️</button>
         </div>
         ${energyHtml}
       `;
@@ -813,6 +816,18 @@ async function showHistory() {
           await updateMealEnergy(meal.id, parseInt(slider.value));
           const tagger = card.querySelector(`#energy-tagger-${meal.id}`);
           tagger.innerHTML = `<div class="energy-badge">⚡ Energy: ${slider.value}/10</div>`;
+        });
+      }
+
+      // Delete meal handler
+      const deleteBtn = card.querySelector('.delete-history-btn');
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', async () => {
+          if (confirm('Are you sure you want to delete this meal?')) {
+            deleteBtn.textContent = '...';
+            await deleteMeal(meal.id);
+            showHistory(); // Refresh the list
+          }
         });
       }
     });

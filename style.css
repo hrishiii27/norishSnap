@@ -1078,6 +1078,21 @@ body {
   background: #f1f3f0;
 }
 
+.delete-history-btn {
+  background: transparent;
+  color: var(--taupe-gray);
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px 6px;
+  transition: all 0.2s ease;
+}
+
+.delete-history-btn:hover {
+  color: var(--error);
+  transform: scale(1.1);
+}
+
 .energy-tagger {
   width: 100%;
   margin-top: 12px;

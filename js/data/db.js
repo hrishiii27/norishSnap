@@ -427,4 +427,30 @@ export async function subtractLeftovers(mealId, leftoverItems) {
   });
 }
 
+export async function deleteMeal(mealId) {
+  if (supabase) {
+    try {
+      await supabase.from('meal_log_items').delete().eq('meal_log_id', mealId);
+      await supabase.from('meal_logs').delete().eq('id', mealId);
+    } catch (err) {
+      console.warn('Supabase delete failed:', err);
+    }
+  }
+
+  const db = await openDB();
+  const tx = db.transaction([STORES.MEAL_LOGS, STORES.MEAL_LOG_ITEMS], 'readwrite');
+  
+  tx.objectStore(STORES.MEAL_LOGS).delete(mealId);
+  
+  return new Promise((resolve) => {
+    const itemsStore = tx.objectStore(STORES.MEAL_LOG_ITEMS);
+    const itemsReq = itemsStore.index('meal_log_id').getAll(mealId);
+    itemsReq.onsuccess = () => {
+      const items = itemsReq.result;
+      items.forEach(i => itemsStore.delete(i.id));
+      resolve();
+    };
+  });
+}
+
 export { STORES, generateUUID };
