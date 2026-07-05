@@ -26,8 +26,12 @@ import {
   updateMealEnergy,
   subtractLeftovers,
   deleteMeal,
+  updateUserGoals,
+  getMealsByDateRange,
 } from './data/db.js';
 import { getSession, signInWithGoogle, signInWithApple, onAuthStateChange, signOut, signInWithEmail, signUpWithEmail } from './auth/auth.js';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 // ── App State ──
 const state = {
@@ -37,7 +41,10 @@ const state = {
   capturedImageUrl: null,    // Data URL of captured image
   isProcessing: false,
   leftoverTargetMealId: null, // If set, next photo is treated as a leftover subtraction
-  shareFraction: 1.0         // Household Meal Share (Thali Mode) multiplier
+  shareFraction: 1.0,        // Household Meal Share (Thali Mode) multiplier
+  analyticsRange: 7,         // 7 or 30 days
+  calorieChart: null,        // Chart.js instance
+  proteinChart: null,        // Chart.js instance
 };
 
 // ── DOM References ──
@@ -273,6 +280,9 @@ function bindEvents() {
 
   // Shadow oil edit
   if (dom.shadowOilEditBtn) dom.shadowOilEditBtn.addEventListener('click', handleShadowOilEdit);
+
+  // Analytics dashboard events
+  bindAnalyticsEvents();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -361,9 +371,9 @@ function handleAudioSnap() {
   }
 
   const recognition = new SpeechRecognition();
-  recognition.lang = 'en-IN'; // Indian English for better accuracy with Indian food terms
+  recognition.lang = 'hi-IN'; // Hindi for better Indian food term recognition, Gemini handles translation
   recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
+  recognition.maxAlternatives = 3; // Get multiple alternatives for better accuracy
 
   recognition.onstart = () => {
     dom.listeningText.textContent = "Listening...";
@@ -380,7 +390,16 @@ function handleAudioSnap() {
   };
 
   recognition.onresult = async (event) => {
-    const transcript = event.results[0][0].transcript;
+    // Collect best transcript from all alternatives
+    let transcript = event.results[0][0].transcript;
+    // If confidence is low, check alternatives
+    if (event.results[0][0].confidence < 0.7 && event.results[0].length > 1) {
+      const altTranscripts = [];
+      for (let i = 0; i < event.results[0].length; i++) {
+        altTranscripts.push(event.results[0][i].transcript);
+      }
+      transcript = altTranscripts.join(' | '); // Send all alternatives to Gemini
+    }
     dom.listeningOverlay.classList.add('hidden');
     
     // Process the transcript
@@ -945,3 +964,212 @@ async function registerSW() {
 
 // ── Boot ──
 init().catch(console.error);
+
+// ═══════════════════════════════════════════════════════════
+// ANALYTICS DASHBOARD
+// ═══════════════════════════════════════════════════════════
+
+function bindAnalyticsEvents() {
+  // Tab switching
+  document.querySelectorAll('.drawer-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      const targetId = `tab-${tab.dataset.tab}`;
+      document.getElementById(targetId)?.classList.add('active');
+      if (tab.dataset.tab === 'analytics') renderAnalytics();
+    });
+  });
+
+  // Time range toggle
+  document.querySelectorAll('.range-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.analyticsRange = parseInt(btn.dataset.range);
+      renderAnalytics();
+    });
+  });
+
+  // Save goals
+  const saveGoalsBtn = document.getElementById('save-goals-btn');
+  if (saveGoalsBtn) {
+    saveGoalsBtn.addEventListener('click', async () => {
+      const calTarget = parseInt(document.getElementById('goal-calories').value);
+      const proTarget = parseInt(document.getElementById('goal-protein').value);
+      if (calTarget && proTarget && state.user) {
+        const goals = {
+          daily_calorie_target: calTarget,
+          protein_target_g: proTarget,
+        };
+        const updated = await updateUserGoals(state.user.id, goals);
+        if (updated) state.user = { ...state.user, ...goals };
+        showToast('Goals saved! ✅');
+        // Update progress ring immediately
+        dom.caloriesTarget.textContent = calTarget;
+      }
+    });
+  }
+}
+
+async function renderAnalytics() {
+  if (!state.user) return;
+
+  const days = state.analyticsRange;
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+  startDate.setHours(0, 0, 0, 0);
+
+  const meals = await getMealsByDateRange(state.user.id, startDate, endDate);
+
+  // Aggregate by day
+  const dailyMap = {};
+  for (let d = 0; d < days; d++) {
+    const date = new Date(startDate);
+    date.setDate(date.getDate() + d);
+    const key = date.toISOString().split('T')[0];
+    dailyMap[key] = { calories: 0, protein: 0, meals: 0 };
+  }
+
+  meals.forEach(meal => {
+    const key = new Date(meal.logged_at).toISOString().split('T')[0];
+    if (dailyMap[key]) {
+      dailyMap[key].calories += meal.total_calculated_calories || 0;
+      dailyMap[key].protein += meal.total_protein_g || 0;
+      dailyMap[key].meals += 1;
+    }
+  });
+
+  const labels = Object.keys(dailyMap).map(k => {
+    const d = new Date(k);
+    return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+  });
+  const calorieData = Object.values(dailyMap).map(d => d.calories);
+  const proteinData = Object.values(dailyMap).map(d => Math.round(d.protein * 10) / 10);
+
+  // Render calorie chart
+  if (state.calorieChart) state.calorieChart.destroy();
+  const calCtx = document.getElementById('calorie-chart')?.getContext('2d');
+  if (calCtx) {
+    state.calorieChart = new Chart(calCtx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Calories',
+          data: calorieData,
+          backgroundColor: 'rgba(74, 107, 82, 0.6)',
+          borderColor: 'rgba(74, 107, 82, 1)',
+          borderWidth: 1,
+          borderRadius: 6,
+        }, {
+          label: 'Target',
+          data: Array(labels.length).fill(state.user.daily_calorie_target || 2000),
+          type: 'line',
+          borderColor: 'rgba(196, 135, 59, 0.5)',
+          borderDash: [5, 5],
+          borderWidth: 2,
+          pointRadius: 0,
+          fill: false,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#2C221E',
+            titleFont: { size: 12 },
+            bodyFont: { size: 12 },
+            cornerRadius: 8,
+            padding: 10,
+          },
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } },
+          x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+        },
+      },
+    });
+  }
+
+  // Render protein chart
+  if (state.proteinChart) state.proteinChart.destroy();
+  const proCtx = document.getElementById('protein-chart')?.getContext('2d');
+  if (proCtx) {
+    state.proteinChart = new Chart(proCtx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Protein (g)',
+          data: proteinData,
+          borderColor: 'rgba(74, 107, 82, 1)',
+          backgroundColor: 'rgba(74, 107, 82, 0.1)',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: 'rgba(74, 107, 82, 1)',
+          pointRadius: 3,
+        }, {
+          label: 'Target',
+          data: Array(labels.length).fill(state.user.protein_target_g || 120),
+          borderColor: 'rgba(196, 135, 59, 0.5)',
+          borderDash: [5, 5],
+          borderWidth: 2,
+          pointRadius: 0,
+          fill: false,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#2C221E',
+            cornerRadius: 8,
+            padding: 10,
+          },
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } },
+          x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+        },
+      },
+    });
+  }
+
+  // Averages
+  const daysWithData = Object.values(dailyMap).filter(d => d.meals > 0).length;
+  const totalCals = calorieData.reduce((a, b) => a + b, 0);
+  const totalPro = proteinData.reduce((a, b) => a + b, 0);
+  const totalMeals = Object.values(dailyMap).reduce((a, d) => a + d.meals, 0);
+
+  document.getElementById('avg-calories').textContent = daysWithData > 0 ? Math.round(totalCals / daysWithData) : 0;
+  document.getElementById('avg-protein').textContent = daysWithData > 0 ? `${Math.round(totalPro / daysWithData)}g` : '0g';
+  document.getElementById('avg-meals').textContent = totalMeals;
+
+  // Streak calculation
+  let streak = 0;
+  const today = new Date();
+  for (let i = 0; i < 365; i++) {
+    const checkDate = new Date(today);
+    checkDate.setDate(checkDate.getDate() - i);
+    const key = checkDate.toISOString().split('T')[0];
+    if (dailyMap[key]?.meals > 0) {
+      streak++;
+    } else if (i > 0) {
+      break; // Streak broken
+    }
+  }
+  document.getElementById('streak-count').textContent = streak;
+
+  // Populate goal inputs
+  document.getElementById('goal-calories').value = state.user.daily_calorie_target || 2000;
+  document.getElementById('goal-protein').value = state.user.protein_target_g || 120;
+}
+

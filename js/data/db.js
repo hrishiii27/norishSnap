@@ -453,4 +453,80 @@ export async function deleteMeal(mealId) {
   });
 }
 
+/** Update user daily goals */
+export async function updateUserGoals(userId, goals) {
+  if (supabase) {
+    try {
+      await supabase.from('users').update(goals).eq('id', userId);
+    } catch (err) {
+      console.warn('Supabase goal update failed:', err);
+    }
+  }
+
+  const db = await openDB();
+  const tx = db.transaction(STORES.USERS, 'readwrite');
+  const store = tx.objectStore(STORES.USERS);
+  return new Promise((resolve) => {
+    const getReq = store.get(userId);
+    getReq.onsuccess = () => {
+      const user = getReq.result;
+      if (user) {
+        Object.assign(user, goals);
+        store.put(user);
+      }
+      resolve(user);
+    };
+  });
+}
+
+/** Get meals within a date range */
+export async function getMealsByDateRange(userId, startDate, endDate) {
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('meal_logs')
+        .select(`
+          *,
+          items:meal_log_items(*)
+        `)
+        .eq('user_id', userId)
+        .gte('logged_at', startDate.toISOString())
+        .lte('logged_at', endDate.toISOString())
+        .order('logged_at', { ascending: true });
+
+      if (!error && data) return data;
+    } catch (err) {
+      console.warn('Supabase date range fetch failed:', err);
+    }
+  }
+
+  // Local fetch
+  const db = await openDB();
+  const tx = db.transaction([STORES.MEAL_LOGS, STORES.MEAL_LOG_ITEMS], 'readonly');
+  const logsStore = tx.objectStore(STORES.MEAL_LOGS);
+
+  return new Promise((resolve) => {
+    const request = logsStore.index('user_id').getAll(userId);
+    request.onsuccess = async () => {
+      const allLogs = request.result;
+      const startStr = startDate.toISOString();
+      const endStr = endDate.toISOString();
+      const filtered = allLogs.filter((log) => log.logged_at >= startStr && log.logged_at <= endStr);
+      filtered.sort((a, b) => new Date(a.logged_at) - new Date(b.logged_at));
+
+      const itemsStore = tx.objectStore(STORES.MEAL_LOG_ITEMS);
+      for (const log of filtered) {
+        const itemsReq = itemsStore.index('meal_log_id').getAll(log.id);
+        await new Promise((res) => {
+          itemsReq.onsuccess = () => {
+            log.items = itemsReq.result;
+            res();
+          };
+        });
+      }
+      resolve(filtered);
+    };
+  });
+}
+
 export { STORES, generateUUID };

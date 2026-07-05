@@ -1191,3 +1191,228 @@ body {
   color: white;
   border-color: var(--botanical-sage);
 }
+
+/* ═══════════════════════════════════════════════
+   ANALYTICS DASHBOARD
+   ═══════════════════════════════════════════════ */
+
+/* Tab System */
+.drawer-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 var(--space-lg);
+  border-bottom: 1px solid var(--bark-08);
+}
+
+.drawer-tab {
+  flex: 1;
+  padding: 12px 0;
+  background: none;
+  border: none;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--taupe-gray);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.drawer-tab.active {
+  color: var(--botanical-sage);
+  border-bottom-color: var(--botanical-sage);
+}
+
+.tab-content {
+  display: none;
+  padding: var(--space-lg);
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Time Range Toggle */
+.analytics-range-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: var(--space-lg);
+  background: var(--bark-08);
+  border-radius: var(--radius-full);
+  padding: 4px;
+}
+
+.range-btn {
+  flex: 1;
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: var(--taupe-gray);
+  transition: all 0.2s ease;
+}
+
+.range-btn.active {
+  background: white;
+  color: var(--deep-bark);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Streak Badge */
+.streak-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #FFF3E0, #FFECB3);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+}
+
+.streak-icon {
+  font-size: 1.5rem;
+}
+
+.streak-count {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--deep-bark);
+}
+
+.streak-label {
+  font-size: var(--fs-label);
+  color: var(--taupe-gray);
+  font-weight: 500;
+}
+
+/* Chart Cards */
+.analytics-card {
+  background: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+  border: 1px solid var(--bark-08);
+}
+
+.analytics-card h3 {
+  font-size: var(--fs-body);
+  font-weight: 700;
+  color: var(--deep-bark);
+  margin-bottom: var(--space-md);
+}
+
+.chart-container {
+  position: relative;
+  height: 200px;
+  width: 100%;
+}
+
+/* Daily Averages */
+.analytics-averages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.avg-card {
+  background: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  text-align: center;
+  border: 1px solid var(--bark-08);
+}
+
+.avg-value {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--botanical-sage);
+}
+
+.avg-label {
+  display: block;
+  font-size: var(--fs-caption);
+  color: var(--taupe-gray);
+  margin-top: 4px;
+}
+
+/* Goals Section */
+.goals-section {
+  background: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  border: 1px solid var(--bark-08);
+}
+
+.goals-section h3 {
+  font-size: var(--fs-body);
+  font-weight: 700;
+  color: var(--deep-bark);
+  margin-bottom: var(--space-md);
+}
+
+.goals-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.goal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.goal-row label {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  color: var(--deep-bark);
+}
+
+.goal-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.goal-input {
+  width: 80px;
+  padding: 8px 10px;
+  border: 1px solid var(--bark-08);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  text-align: right;
+}
+
+.goal-input:focus {
+  outline: none;
+  border-color: var(--botanical-sage);
+}
+
+.goal-unit {
+  font-size: var(--fs-label);
+  color: var(--taupe-gray);
+}
+
+.save-goals-btn {
+  padding: 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--botanical-sage);
+  color: white;
+  font-weight: 600;
+  font-size: var(--fs-body);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.save-goals-btn:hover {
+  background: #3d5a44;
+}
+

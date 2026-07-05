@@ -211,8 +211,29 @@ export async function recalculateItem(foodName, newWeight, existingItem) {
     };
   }
 
-  // Keep existing ratios if no match
+  // No match found — check if this is a name change (weight unchanged)
   const oldWeight = existingItem.weight_grams || 100;
+  const nameChanged = foodName !== existingItem.food_name_raw;
+  
+  if (nameChanged) {
+    // Name changed but no match: use generic per-100g estimates so user sees different macros
+    const multiplier = newWeight / 100;
+    return {
+      ...existingItem,
+      food_name_raw: foodName,
+      reference_match: null,
+      reference_id: null,
+      weight_grams: newWeight,
+      calories: Math.round(150 * multiplier), // ~150 cal per 100g generic
+      protein: +(4 * multiplier).toFixed(1),
+      carbs: +(20 * multiplier).toFixed(1),
+      fats: +(5 * multiplier).toFixed(1),
+      fiber: 0,
+      was_user_corrected: true,
+    };
+  }
+
+  // Weight-only change: scale proportionally
   const ratio = newWeight / oldWeight;
 
   return {
