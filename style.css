@@ -1173,7 +1173,7 @@ body {
   flex-wrap: wrap;
 }
 
-.thali-share-btn {
+.thali-share-btn, .serving-type-btn {
   flex: 1;
   padding: 8px 12px;
   border: 1px solid var(--taupe-gray);
@@ -1186,7 +1186,7 @@ body {
   transition: all var(--duration-fast) var(--ease-panel);
 }
 
-.thali-share-btn.active {
+.thali-share-btn.active, .serving-type-btn.active {
   background: var(--botanical-sage);
   color: white;
   border-color: var(--botanical-sage);

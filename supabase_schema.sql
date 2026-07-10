@@ -70,3 +70,33 @@ CREATE TABLE user_smart_revision_memory (
 
 CREATE INDEX idx_meal_logs_user_date ON meal_logs(user_id, logged_at DESC);
 CREATE INDEX idx_revision_lookup ON user_smart_revision_memory(user_id, detected_ai_trigger_phrase);
+
+-- ==========================================
+-- ROW LEVEL SECURITY (RLS) POLICIES
+-- ==========================================
+
+-- 1. Policies for users
+CREATE POLICY "Users can manage their own profile" ON users
+FOR ALL USING (auth.uid() = id);
+
+-- 2. Policies for food_reference_dictionary
+CREATE POLICY "Anyone can read food reference dictionary" ON food_reference_dictionary
+FOR SELECT USING (true);
+
+-- 3. Policies for meal_logs
+CREATE POLICY "Users can manage their own meal logs" ON meal_logs
+FOR ALL USING (auth.uid() = user_id);
+
+-- 4. Policies for meal_log_items
+CREATE POLICY "Users can manage their own meal log items" ON meal_log_items
+FOR ALL USING (
+  EXISTS (
+    SELECT 1 FROM meal_logs 
+    WHERE meal_logs.id = meal_log_items.meal_log_id 
+    AND meal_logs.user_id = auth.uid()
+  )
+);
+
+-- 5. Policies for user_smart_revision_memory
+CREATE POLICY "Users can manage their own revision memory" ON user_smart_revision_memory
+FOR ALL USING (auth.uid() = user_id);

@@ -42,10 +42,14 @@ const state = {
   isProcessing: false,
   leftoverTargetMealId: null, // If set, next photo is treated as a leftover subtraction
   shareFraction: 1.0,        // Household Meal Share (Thali Mode) multiplier
+  servingsMultiplier: 1,     // Serving multiplier (e.g. 1, 2, 3)
   analyticsRange: 7,         // 7 or 30 days
   calorieChart: null,        // Chart.js instance
   proteinChart: null,        // Chart.js instance
 };
+
+// Global instance for mobile Chrome
+window.recognitionInstance = null;
 
 // ── DOM References ──
 const dom = {
@@ -87,6 +91,13 @@ const dom = {
   // Thali Share Mode
   thaliShareBtns:   document.querySelectorAll('.thali-share-btn'),
 
+  // Servings Mode
+  servingTypeBtns:  document.querySelectorAll('.serving-type-btn'),
+  servingsCounterContainer: document.getElementById('servings-counter-container'),
+  btnDecreaseServings: document.getElementById('btn-decrease-servings'),
+  btnIncreaseServings: document.getElementById('btn-increase-servings'),
+  servingsCountText: document.getElementById('servings-count'),
+
   shadowOilPrompt:  document.getElementById('shadow-oil-prompt'),
   shadowOilText:    document.getElementById('shadow-oil-text'),
   shadowOilEditBtn: document.getElementById('shadow-oil-edit-btn'),
@@ -108,6 +119,9 @@ const dom = {
   historyList:      document.getElementById('history-list'),
   caloriesConsumed: document.getElementById('calories-consumed'),
   caloriesTarget:   document.getElementById('calories-target'),
+  
+  // Header logout
+  logoutBtn:        document.getElementById('logout-btn'),
   progressRingFill: document.getElementById('progress-ring-fill'),
 };
 
@@ -257,6 +271,53 @@ function bindEvents() {
   if (dom.historyBtn) dom.historyBtn.addEventListener('click', () => showHistory());
   if (dom.historyCloseBtn) dom.historyCloseBtn.addEventListener('click', () => hideHistory());
 
+  // Logout header
+  if (dom.logoutBtn) {
+    dom.logoutBtn.addEventListener('click', () => {
+      signOut();
+      hideHistory();
+    });
+  }
+
+  // Servings Mode
+  if (dom.servingTypeBtns && dom.servingsCounterContainer) {
+    dom.servingTypeBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        dom.servingTypeBtns.forEach(b => b.classList.remove('active'));
+        const target = e.target;
+        target.classList.add('active');
+        const type = target.dataset.type;
+        
+        if (type === 'serving') {
+          dom.servingsCounterContainer.classList.remove('hidden');
+          state.servingsMultiplier = parseInt(dom.servingsCountText.textContent) || 1;
+        } else {
+          dom.servingsCounterContainer.classList.add('hidden');
+          state.servingsMultiplier = 1;
+        }
+        updateMacroTotals();
+      });
+    });
+
+    dom.btnIncreaseServings.addEventListener('click', () => {
+      let count = parseInt(dom.servingsCountText.textContent) || 1;
+      count++;
+      dom.servingsCountText.textContent = count;
+      state.servingsMultiplier = count;
+      updateMacroTotals();
+    });
+
+    dom.btnDecreaseServings.addEventListener('click', () => {
+      let count = parseInt(dom.servingsCountText.textContent) || 1;
+      if (count > 1) {
+        count--;
+        dom.servingsCountText.textContent = count;
+        state.servingsMultiplier = count;
+        updateMacroTotals();
+      }
+    });
+  }
+
   // Thali Share Mode
   dom.thaliShareBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -370,26 +431,27 @@ function handleAudioSnap() {
     return;
   }
 
-  const recognition = new SpeechRecognition();
-  recognition.lang = 'hi-IN'; // Hindi for better Indian food term recognition, Gemini handles translation
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 3; // Get multiple alternatives for better accuracy
+  window.recognitionInstance = new SpeechRecognition();
+  window.recognitionInstance.lang = 'hi-IN'; // Hindi for better Indian food term recognition, Gemini handles translation
+  window.recognitionInstance.interimResults = false;
+  window.recognitionInstance.continuous = true; // Use continuous to prevent premature mic drop on mobile
+  window.recognitionInstance.maxAlternatives = 3; // Get multiple alternatives for better accuracy
 
-  recognition.onstart = () => {
+  window.recognitionInstance.onstart = () => {
     dom.listeningText.textContent = "Listening...";
     dom.listeningOverlay.classList.remove('hidden');
   };
 
-  recognition.onspeechstart = () => {
+  window.recognitionInstance.onspeechstart = () => {
     dom.listeningText.textContent = "Keep speaking...";
   };
 
-  recognition.onspeechend = () => {
-    recognition.stop();
+  window.recognitionInstance.onspeechend = () => {
+    window.recognitionInstance.stop();
     dom.listeningText.textContent = "Processing voice...";
   };
 
-  recognition.onresult = async (event) => {
+  window.recognitionInstance.onresult = async (event) => {
     // Collect best transcript from all alternatives
     let transcript = event.results[0][0].transcript;
     // If confidence is low, check alternatives
@@ -400,19 +462,20 @@ function handleAudioSnap() {
       }
       transcript = altTranscripts.join(' | '); // Send all alternatives to Gemini
     }
+    window.recognitionInstance.stop(); // Manually stop because continuous is true
     dom.listeningOverlay.classList.add('hidden');
     
     // Process the transcript
     await processAudioTranscript(transcript);
   };
 
-  recognition.onerror = (event) => {
+  window.recognitionInstance.onerror = (event) => {
     console.error("Speech recognition error", event.error);
     dom.listeningOverlay.classList.add('hidden');
     showToast("Failed to hear you. Please try again.");
   };
 
-  recognition.start();
+  window.recognitionInstance.start();
 }
 
 async function processAudioTranscript(transcript) {
@@ -598,11 +661,12 @@ function updateMacroTotals() {
   );
 
   const frac = state.shareFraction || 1.0;
+  const mult = state.servingsMultiplier || 1.0;
 
-  animateNumber(dom.totalCalories, parseInt(dom.totalCalories.textContent) || 0, Math.round(totals.calories * frac));
-  animateNumber(dom.totalProtein, parseFloat(dom.totalProtein.textContent) || 0, totals.protein * frac, 'g');
-  animateNumber(dom.totalCarbs, parseFloat(dom.totalCarbs.textContent) || 0, totals.carbs * frac, 'g');
-  animateNumber(dom.totalFats, parseFloat(dom.totalFats.textContent) || 0, totals.fats * frac, 'g');
+  animateNumber(dom.totalCalories, parseInt(dom.totalCalories.textContent) || 0, Math.round(totals.calories * frac * mult));
+  animateNumber(dom.totalProtein, parseFloat(dom.totalProtein.textContent) || 0, totals.protein * frac * mult, 'g');
+  animateNumber(dom.totalCarbs, parseFloat(dom.totalCarbs.textContent) || 0, totals.carbs * frac * mult, 'g');
+  animateNumber(dom.totalFats, parseFloat(dom.totalFats.textContent) || 0, totals.fats * frac * mult, 'g');
 }
 
 // ── Shadow Fat Prompt ──
@@ -682,26 +746,28 @@ async function handleLogMeal() {
 
   try {
     const frac = state.shareFraction || 1.0;
+    const mult = state.servingsMultiplier || 1.0;
+    const scale = frac * mult;
     
-    // Scale the items based on share fraction
+    // Scale the items based on share fraction and servings multiplier
     const scaledItems = state.currentItems.map(item => ({
       ...item,
-      calories: item.calories * frac,
-      protein: item.protein * frac,
-      carbs: item.carbs * frac,
-      fats: item.fats * frac,
-      weight_grams: item.weight_grams * frac,
-      household_unit_weight_g: item.household_unit_weight_g * frac
+      calories: item.calories * scale,
+      protein: item.protein * scale,
+      carbs: item.carbs * scale,
+      fats: item.fats * scale,
+      weight_grams: item.weight_grams * scale,
+      household_unit_weight_g: item.household_unit_weight_g * scale
     }));
 
     await logMeal(
       {
         user_id: state.user.id,
         image_url: state.capturedImageUrl?.substring(0, 200) || null, // Truncate for storage
-        total_calories: Math.round(totals.calories * frac),
-        total_protein: +(totals.protein * frac).toFixed(1),
-        total_carbs: +(totals.carbs * frac).toFixed(1),
-        total_fats: +(totals.fats * frac).toFixed(1),
+        total_calories: Math.round(totals.calories * scale),
+        total_protein: +(totals.protein * scale).toFixed(1),
+        total_carbs: +(totals.carbs * scale).toFixed(1),
+        total_fats: +(totals.fats * scale).toFixed(1),
         context: state.context?.mealContext || null,
       },
       scaledItems
@@ -852,18 +918,6 @@ async function showHistory() {
     });
   }
   
-  // Add Logout button in history drawer
-  const logoutBtn = document.createElement('button');
-  logoutBtn.className = 'auth-btn secondary';
-  logoutBtn.style.marginTop = '24px';
-  logoutBtn.style.color = 'var(--text-secondary)';
-  logoutBtn.textContent = 'Log Out';
-  logoutBtn.onclick = () => {
-    signOut();
-    hideHistory();
-  };
-  dom.historyList.appendChild(logoutBtn);
-
   dom.historyDrawer.classList.remove('hidden');
   void dom.historyDrawer.offsetHeight;
   dom.historyDrawer.classList.add('visible');
