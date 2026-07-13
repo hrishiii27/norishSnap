@@ -1415,16 +1415,15 @@ body {
 .save-goals-btn:hover {
   background: #3d5a44;
 }
-
 /* ═══════════════════════════════════════════════════════════════
    ROOMS FEATURE STYLES
    ═══════════════════════════════════════════════════════════════ */
 
 .rooms-container {
-  padding: 16px;
+  padding: var(--space-lg);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-md);
 }
 
 .rooms-header h3 {
@@ -1438,27 +1437,66 @@ body {
 .badge {
   background: var(--sage-15);
   color: var(--botanical-sage);
-  padding: 4px 8px;
+  padding: 4px 10px;
   border-radius: 12px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-/* Modals */
+/* ── Room Toast Notifications ── */
+.room-toast {
+  position: fixed;
+  top: calc(var(--safe-area-top, 0px) + 16px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  padding: 12px 24px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1100;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  max-width: 90vw;
+  text-align: center;
+}
+
+.room-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.room-toast-success {
+  background: var(--botanical-sage);
+  color: white;
+  box-shadow: 0 4px 20px rgba(74, 107, 82, 0.3);
+}
+
+.room-toast-error {
+  background: #c0392b;
+  color: white;
+  box-shadow: 0 4px 20px rgba(192, 57, 43, 0.3);
+}
+
+/* ── Modal Dialog ── */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   opacity: 1;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
+  padding: var(--space-lg);
 }
 
 .modal.hidden {
@@ -1468,18 +1506,18 @@ body {
 
 .modal-content {
   background: var(--surface-card);
-  padding: 24px;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 400px;
+  padding: 28px 24px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 380px;
   position: relative;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transform: translateY(0);
-  transition: transform 0.3s var(--ease-out-back);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+  transform: translateY(0) scale(1);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .modal.hidden .modal-content {
-  transform: translateY(20px);
+  transform: translateY(24px) scale(0.96);
 }
 
 .modal-close {
@@ -1491,51 +1529,289 @@ body {
   font-size: 20px;
   color: var(--taupe-gray);
   cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s ease;
 }
 
-.modal-title {
+.modal-close:hover {
+  background: var(--bark-08);
+}
+
+#modal-title {
   font-family: var(--font-heading);
-  font-size: 18px;
-  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: var(--deep-bark);
+  padding-right: 32px;
+}
+
+.modal-input {
+  width: 100%;
+  border: 1.5px solid var(--bark-08);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font-size: 15px;
+  font-family: var(--font-body);
+  background: var(--canvas-base);
+  color: var(--deep-bark);
+  outline: none;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.modal-input:focus {
+  border-color: var(--botanical-sage);
+}
+
+.modal-input::placeholder {
+  color: var(--taupe-gray);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.modal-btn-primary {
+  background: var(--botanical-sage);
+  color: white;
+}
+
+.modal-btn-primary:hover {
+  background: #3d5a44;
+}
+
+.modal-btn-secondary {
+  background: transparent;
+  color: var(--deep-bark);
+  border-color: var(--bark-08);
+}
+
+.modal-btn-secondary:hover {
+  background: var(--bark-08);
+}
+
+.modal-divider {
+  height: 1px;
+  background: var(--bark-08);
+  margin: 20px 0;
+}
+
+/* ── Invite Code Display ── */
+.invite-code-display {
+  text-align: center;
+}
+
+.invite-code-label {
+  font-size: 13px;
+  color: var(--taupe-gray);
+  margin-bottom: 8px;
+}
+
+.invite-code-value {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--botanical-sage);
+  background: var(--sage-08);
+  padding: 16px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Members List ── */
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.member-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--canvas-base);
+  border-radius: var(--radius-sm);
+}
+
+.member-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.member-email {
+  font-size: 14px;
+  font-weight: 500;
   color: var(--deep-bark);
 }
 
-/* Room Comments */
+.member-targets {
+  font-size: 13px;
+  color: var(--taupe-gray);
+}
+
+/* ── Room Feed ── */
+.room-feed-item {
+  background: var(--surface-card);
+  border: 1px solid var(--bark-08);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.feed-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.feed-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.feed-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--sage-15);
+  color: var(--botanical-sage);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.feed-username {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--deep-bark);
+}
+
+.feed-time {
+  font-size: 12px;
+  color: var(--taupe-gray);
+}
+
+.feed-calories {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--botanical-sage);
+}
+
+.feed-calories small {
+  font-weight: 400;
+  font-size: 12px;
+  margin-left: 2px;
+}
+
+.feed-item-body {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--bark-08);
+}
+
+.feed-macros {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--taupe-gray);
+  margin-bottom: 6px;
+}
+
+.feed-foods {
+  font-size: 13px;
+  color: var(--deep-bark);
+}
+
+/* ── Room Comments ── */
+.feed-comments {
+  padding-top: 10px;
+}
+
 .room-comment {
-  background: var(--bg-primary);
+  background: var(--canvas-base);
   border-radius: 8px;
   padding: 8px 12px;
-  margin-top: 8px;
-  font-size: 14px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
 }
 
 .room-comment .comment-author {
   font-weight: 600;
   color: var(--botanical-sage);
-  margin-bottom: 4px;
+  white-space: nowrap;
 }
 
 .comment-input-row {
   display: flex;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .comment-input {
   flex: 1;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--bark-08);
   border-radius: 20px;
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-family: var(--font-body);
   outline: none;
+  background: var(--canvas-base);
+  transition: border-color 0.2s ease;
+}
+
+.comment-input:focus {
+  border-color: var(--botanical-sage);
 }
 
 .comment-btn {
   background: var(--botanical-sage);
   color: white;
   border: none;
-  border-radius: 20px;
-  padding: 8px 16px;
-  font-size: 14px;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-size: 16px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.comment-btn:hover {
+  background: #3d5a44;
+}
+
+.comment-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

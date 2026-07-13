@@ -534,25 +534,34 @@ export async function getMealsByDateRange(userId, startDate, endDate) {
 export async function createRoom(hostId, roomName) {
   if (!supabase) throw new Error('Rooms require a cloud connection.');
   const inviteCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-  const { data, error } = await supabase
+  
+  // Insert the room (don't chain .select().single() — it causes 406 with RLS)
+  const { error: insertError } = await supabase
     .from('rooms')
-    .insert({ host_id: hostId, name: roomName, invite_code: inviteCode })
-    .select()
-    .single();
-  if (error) throw error;
+    .insert({ host_id: hostId, name: roomName, invite_code: inviteCode });
+  if (insertError) throw insertError;
+  
+  // Now fetch the room we just created (RLS allows host to read their own rooms)
+  const { data: room, error: fetchError } = await supabase
+    .from('rooms')
+    .select('*')
+    .eq('host_id', hostId)
+    .eq('invite_code', inviteCode)
+    .maybeSingle();
+  if (fetchError) throw fetchError;
+  if (!room) throw new Error('Room created but could not be fetched');
   
   // Add host as a member automatically
-  await supabase.from('room_members').insert({ room_id: data.id, user_id: hostId });
-  return data;
+  await supabase.from('room_members').insert({ room_id: room.id, user_id: hostId });
+  return room;
 }
 
 export async function joinRoomByCode(userId, inviteCode) {
   if (!supabase) throw new Error('Rooms require a cloud connection.');
   const { data, error } = await supabase.rpc('join_room_by_code', { p_invite_code: inviteCode.toUpperCase() });
   if (error) throw error;
-  
-  // Return a mock room so the UI can proceed (it just needs the ID)
-  return { id: data, name: 'Joined Room' };
+  // RPC returns the room UUID directly
+  return data;
 }
 
 export async function inviteUserToRoom(roomId, hostId, email) {
@@ -642,13 +651,10 @@ export async function updateMemberTargets(roomId, memberId, targets) {
 
 export async function addRoomComment(mealLogId, userId, commentText) {
   if (!supabase) return;
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('room_comments')
-    .insert({ meal_log_id: mealLogId, user_id: userId, comment_text: commentText })
-    .select(`*, users(email)`)
-    .single();
+    .insert({ meal_log_id: mealLogId, user_id: userId, comment_text: commentText });
   if (error) throw error;
-  return data;
 }
 
 export async function uploadRoomSnap(file, roomId) {
