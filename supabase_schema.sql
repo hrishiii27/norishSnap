@@ -241,3 +241,27 @@ FOR SELECT USING (
     WHERE room_members.user_id = meal_logs.user_id AND room_members.room_id IN (SELECT get_user_hosted_rooms())
   )
 );
+
+-- RPC Function for joining rooms securely by invite code
+CREATE OR REPLACE FUNCTION join_room_by_code(p_invite_code text)
+RETURNS uuid
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public
+AS $$
+DECLARE
+  v_room_id uuid;
+BEGIN
+  -- Find the room by invite code
+  SELECT id INTO v_room_id FROM rooms WHERE invite_code = p_invite_code;
+  
+  IF v_room_id IS NULL THEN
+    RAISE EXCEPTION 'Invalid invite code';
+  END IF;
+  
+  -- Insert membership (if they are already a member, ignore)
+  INSERT INTO room_members (room_id, user_id) 
+  VALUES (v_room_id, auth.uid())
+  ON CONFLICT DO NOTHING;
+  
+  RETURN v_room_id;
+END;
+$$;

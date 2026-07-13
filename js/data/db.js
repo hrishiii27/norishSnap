@@ -548,29 +548,18 @@ export async function createRoom(hostId, roomName) {
 
 export async function joinRoomByCode(userId, inviteCode) {
   if (!supabase) throw new Error('Rooms require a cloud connection.');
-  // Find room by code
-  const { data: room, error: roomError } = await supabase
-    .from('rooms')
-    .select('*')
-    .eq('invite_code', inviteCode.toUpperCase())
-    .single();
-    
-  if (roomError || !room) throw new Error('Invalid invite code');
+  const { data, error } = await supabase.rpc('join_room_by_code', { p_invite_code: inviteCode.toUpperCase() });
+  if (error) throw error;
   
-  const { error: joinError } = await supabase
-    .from('room_members')
-    .insert({ room_id: room.id, user_id: userId });
-    
-  if (joinError) throw joinError;
-  return room;
+  // Return a mock room so the UI can proceed (it just needs the ID)
+  return { id: data, name: 'Joined Room' };
 }
 
 export async function inviteUserToRoom(roomId, hostId, email) {
   if (!supabase) return;
   const { data, error } = await supabase
     .from('room_invites')
-    .insert({ room_id: roomId, email: email.toLowerCase(), invited_by: hostId })
-    .select();
+    .insert({ room_id: roomId, email: email.toLowerCase(), invited_by: hostId });
   if (error) throw error;
   return data;
 }
