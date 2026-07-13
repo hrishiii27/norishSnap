@@ -28,8 +28,10 @@ import {
   deleteMeal,
   updateUserGoals,
   getMealsByDateRange,
+  uploadRoomSnap,
 } from './data/db.js';
 import { getSession, signInWithGoogle, signInWithApple, onAuthStateChange, signOut, signInWithEmail, signUpWithEmail } from './auth/auth.js';
+import { initRooms } from './rooms.js';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
@@ -171,6 +173,9 @@ async function enterApp(user) {
     dom.contextIcon.textContent = state.context.icon;
     dom.contextLabel.textContent = state.context.mealContext;
   }
+  
+  // Initialize Rooms
+  await initRooms(state, dom);
 }
 
 function bindEvents() {
@@ -760,10 +765,26 @@ async function handleLogMeal() {
       household_unit_weight_g: item.household_unit_weight_g * scale
     }));
 
+    let finalImageUrl = state.capturedImageUrl?.substring(0, 200) || null;
+
+    if (state.activeRoomId && state.capturedImageUrl && state.capturedImageUrl.startsWith('data:image')) {
+      try {
+        const response = await fetch(state.capturedImageUrl);
+        const blob = await response.blob();
+        const file = new File([blob], 'snap.jpg', { type: 'image/jpeg' });
+        const uploadedUrl = await uploadRoomSnap(file, state.activeRoomId);
+        if (uploadedUrl) {
+          finalImageUrl = uploadedUrl;
+        }
+      } catch (err) {
+        console.error('Failed to upload room snap:', err);
+      }
+    }
+
     await logMeal(
       {
         user_id: state.user.id,
-        image_url: state.capturedImageUrl?.substring(0, 200) || null, // Truncate for storage
+        image_url: finalImageUrl,
         total_calories: Math.round(totals.calories * scale),
         total_protein: +(totals.protein * scale).toFixed(1),
         total_carbs: +(totals.carbs * scale).toFixed(1),

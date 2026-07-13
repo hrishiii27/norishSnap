@@ -529,4 +529,153 @@ export async function getMealsByDateRange(userId, startDate, endDate) {
   });
 }
 
-export { STORES, generateUUID };
+// ── Rooms Feature API ──
+
+export async function createRoom(hostId, roomName) {
+  if (!supabase) throw new Error('Rooms require a cloud connection.');
+  const inviteCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+  const { data, error } = await supabase
+    .from('rooms')
+    .insert({ host_id: hostId, name: roomName, invite_code: inviteCode })
+    .select()
+    .single();
+  if (error) throw error;
+  
+  // Add host as a member automatically
+  await supabase.from('room_members').insert({ room_id: data.id, user_id: hostId });
+  return data;
+}
+
+export async function joinRoomByCode(userId, inviteCode) {
+  if (!supabase) throw new Error('Rooms require a cloud connection.');
+  // Find room by code
+  const { data: room, error: roomError } = await supabase
+    .from('rooms')
+    .select('*')
+    .eq('invite_code', inviteCode.toUpperCase())
+    .single();
+    
+  if (roomError || !room) throw new Error('Invalid invite code');
+  
+  const { error: joinError } = await supabase
+    .from('room_members')
+    .insert({ room_id: room.id, user_id: userId });
+    
+  if (joinError) throw joinError;
+  return room;
+}
+
+export async function inviteUserToRoom(roomId, hostId, email) {
+  if (!supabase) return;
+  const { data, error } = await supabase
+    .from('room_invites')
+    .insert({ room_id: roomId, email: email.toLowerCase(), invited_by: hostId })
+    .select();
+  if (error) throw error;
+  return data;
+}
+
+export async function fetchUserRooms(userId) {
+  if (!supabase) return [];
+  // Get rooms where user is a member or host
+  const { data, error } = await supabase
+    .from('rooms')
+    .select(`
+      *,
+      room_members!inner(user_id)
+    `)
+    .eq('room_members.user_id', userId);
+  if (error) throw error;
+  return data;
+}
+
+export async function fetchRoomDetails(roomId) {
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from('rooms')
+    .select(`
+      *,
+      members:room_members(
+        user_id,
+        joined_at,
+        target_calories,
+        target_protein_g,
+        target_carbs_g,
+        target_fats_g,
+        users(email)
+      )
+    `)
+    .eq('id', roomId)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function fetchRoomFeed(roomId, startDate, endDate) {
+  if (!supabase) return [];
+  // Fetch logs for all users in the room
+  // (Relies on RLS allowing host to see member logs)
+  const { data: roomMembers } = await supabase.from('room_members').select('user_id').eq('room_id', roomId);
+  if (!roomMembers || roomMembers.length === 0) return [];
+  
+  const memberIds = roomMembers.map(m => m.user_id);
+  
+  let query = supabase
+    .from('meal_logs')
+    .select(`
+      *,
+      users(email),
+      items:meal_log_items(*),
+      comments:room_comments(
+        id, comment_text, created_at, user_id, users(email)
+      )
+    `)
+    .in('user_id', memberIds)
+    .order('logged_at', { ascending: false });
+    
+  if (startDate) query = query.gte('logged_at', startDate.toISOString());
+  if (endDate) query = query.lte('logged_at', endDate.toISOString());
+  
+  const { data, error } = await query;
+  if (error) throw error;
+  return data;
+}
+
+export async function updateMemberTargets(roomId, memberId, targets) {
+  if (!supabase) return;
+  const { error } = await supabase
+    .from('room_members')
+    .update(targets)
+    .eq('room_id', roomId)
+    .eq('user_id', memberId);
+  if (error) throw error;
+}
+
+export async function addRoomComment(mealLogId, userId, commentText) {
+  if (!supabase) return;
+  const { data, error } = await supabase
+    .from('room_comments')
+    .insert({ meal_log_id: mealLogId, user_id: userId, comment_text: commentText })
+    .select(`*, users(email)`)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function uploadRoomSnap(file, roomId) {
+  if (!supabase) return null;
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${generateUUID()}.${fileExt}`;
+  const filePath = `${roomId}/${fileName}`;
+  
+  const { data, error } = await supabase.storage
+    .from('room_meal_snaps')
+    .upload(filePath, file);
+    
+  if (error) throw error;
+  // Return the public URL or the path
+  const { data: publicUrlData } = supabase.storage.from('room_meal_snaps').getPublicUrl(filePath);
+  return publicUrlData.publicUrl;
+}
+
+export { STORES, generateUUID, supabase };
