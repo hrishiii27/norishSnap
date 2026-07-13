@@ -568,7 +568,10 @@ export async function inviteUserToRoom(roomId, hostId, email) {
   if (!supabase) return;
   const { data, error } = await supabase
     .from('room_invites')
-    .insert({ room_id: roomId, email: email.toLowerCase(), invited_by: hostId });
+    .upsert(
+      { room_id: roomId, email: email.toLowerCase(), invited_by: hostId, status: 'pending' },
+      { onConflict: 'room_id,email' }
+    );
   if (error) throw error;
   return data;
 }

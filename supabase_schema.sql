@@ -79,6 +79,16 @@ CREATE INDEX idx_revision_lookup ON user_smart_revision_memory(user_id, detected
 CREATE POLICY "Users can manage their own profile" ON users
 FOR ALL USING (auth.uid() = id);
 
+-- 1b. Room co-members can see each other's email
+CREATE POLICY "Room co-members can view each other" ON users
+FOR SELECT USING (
+  EXISTS (
+    SELECT 1 FROM room_members 
+    WHERE room_members.user_id = users.id 
+    AND room_members.room_id IN (SELECT get_user_member_rooms())
+  )
+);
+
 -- 2. Policies for food_reference_dictionary
 CREATE POLICY "Anyone can read food reference dictionary" ON food_reference_dictionary
 FOR SELECT USING (true);
@@ -94,6 +104,17 @@ FOR ALL USING (
     SELECT 1 FROM meal_logs 
     WHERE meal_logs.id = meal_log_items.meal_log_id 
     AND meal_logs.user_id = auth.uid()
+  )
+);
+
+-- 4b. Hosts can view meal items of room members
+CREATE POLICY "Hosts can view member meal items" ON meal_log_items
+FOR SELECT USING (
+  EXISTS (
+    SELECT 1 FROM meal_logs
+    JOIN room_members ON room_members.user_id = meal_logs.user_id
+    WHERE meal_logs.id = meal_log_items.meal_log_id
+    AND room_members.room_id IN (SELECT get_user_hosted_rooms())
   )
 );
 
