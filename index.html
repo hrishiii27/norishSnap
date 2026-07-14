@@ -167,6 +167,13 @@
       
       <!-- Placeholder when camera is OFF -->
       <div id="camera-placeholder" class="camera-placeholder">
+        <!-- Streak Badge -->
+        <div id="streak-badge" class="streak-badge hidden">
+          <span class="streak-fire">🔥</span>
+          <span id="streak-count" class="streak-count">0</span>
+          <span class="streak-label">day streak</span>
+        </div>
+
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="color: var(--botanical-sage); margin-bottom: 16px;">
           <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
           <circle cx="12" cy="13" r="4"/>
@@ -187,10 +194,32 @@
             Voice Log (Audio Snap)
           </button>
 
+          <button id="btn-barcode-scan" class="action-btn barcode-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <path d="M3 5v-2h4"/>
+              <path d="M17 3h4v2"/>
+              <path d="M21 19v2h-4"/>
+              <path d="M7 21h-4v-2"/>
+              <line x1="7" y1="8" x2="7" y2="16"/>
+              <line x1="10" y1="8" x2="10" y2="16"/>
+              <line x1="13" y1="8" x2="13" y2="16"/>
+              <line x1="16" y1="8" x2="16" y2="16"/>
+            </svg>
+            Scan Barcode
+          </button>
+
           <label for="gallery-upload-input" class="action-btn secondary">
             Upload from Gallery
           </label>
           <input type="file" id="gallery-upload-input" accept="image/*" class="hidden">
+        </div>
+
+        <!-- Quick Log: Meal Templates -->
+        <div id="templates-section" class="templates-section hidden">
+          <h4 class="templates-title">Quick Log</h4>
+          <div id="templates-list" class="templates-scroll">
+            <!-- Template cards injected dynamically -->
+          </div>
         </div>
       </div>
 
@@ -353,10 +382,19 @@
       </div>
 
       <!-- Log meal button -->
-      <button id="log-meal-btn" class="log-meal-btn">
-        <span class="log-meal-icon">✓</span>
-        Log This Meal
-      </button>
+      <div class="meal-action-btns">
+        <button id="log-meal-btn" class="log-meal-btn">
+          <span class="log-meal-icon">✓</span>
+          Log This Meal
+        </button>
+        <button id="save-template-btn" class="save-template-btn" title="Save as template for quick logging">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/>
+            <polyline points="7 3 7 8 15 8"/>
+          </svg>
+        </button>
+      </div>
     </section>
 
     <!-- ═══════════════════════════════════════════════ -->
@@ -465,6 +503,29 @@
             <button id="save-goals-btn" class="save-goals-btn">Save Goals</button>
           </div>
         </div>
+
+        <!-- Weekly Digest -->
+        <div id="weekly-digest-card" class="analytics-card weekly-digest-card hidden">
+          <div class="digest-header">
+            <h3>📊 Weekly Report</h3>
+            <span id="digest-date-range" class="digest-date-range"></span>
+          </div>
+          <div id="digest-body" class="digest-body">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <!-- Export PDF -->
+        <button id="btn-export-pdf" class="action-btn secondary" style="width: 100%; margin-top: 8px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="margin-right: 6px;">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          Export PDF Report
+        </button>
       </div>
 
       <!-- ROOMS TAB -->

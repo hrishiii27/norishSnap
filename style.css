@@ -1815,3 +1815,258 @@ body {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   NEW FEATURES (Streaks, Templates, Barcode, Digest)
+   ═══════════════════════════════════════════════════════════ */
+
+/* STREAKS */
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-card);
+  padding: 6px 14px;
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  margin-bottom: 24px;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.streak-bounce {
+  transform: scale(1.15);
+}
+
+.streak-fire {
+  font-size: 18px;
+}
+
+.streak-count {
+  font-weight: 700;
+  color: var(--botanical-sage);
+  font-size: 16px;
+}
+
+.streak-label {
+  font-size: 13px;
+  color: var(--taupe-gray);
+  font-weight: 500;
+}
+
+/* QUICK LOG TEMPLATES */
+.templates-section {
+  width: 100%;
+  margin-top: 32px;
+  text-align: left;
+}
+
+.templates-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--taupe-gray);
+  margin-bottom: 12px;
+  padding: 0 16px;
+}
+
+.templates-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 4px 16px 16px 16px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+.templates-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.template-card {
+  min-width: 140px;
+  max-width: 180px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
+}
+
+.template-card:active {
+  transform: scale(0.96);
+}
+
+.template-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 18px; /* space for delete btn */
+}
+
+.template-cals {
+  font-size: 12px;
+  color: var(--botanical-sage);
+  font-weight: 500;
+  background: var(--sage-08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.template-delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: var(--taupe-gray);
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.template-delete-btn:hover {
+  background: rgba(0,0,0,0.05);
+  color: var(--system-error);
+}
+
+/* SAVE TEMPLATE BUTTON */
+.meal-action-btns {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.meal-action-btns .log-meal-btn {
+  flex: 1;
+}
+
+.save-template-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  background: var(--surface-card);
+  color: var(--botanical-sage);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.save-template-btn:hover {
+  background: var(--sage-08);
+}
+
+.save-template-btn:active {
+  transform: scale(0.95);
+}
+
+/* WEEKLY DIGEST */
+.weekly-digest-card {
+  background: linear-gradient(to bottom right, #ffffff, #f9faf8);
+  border: 1px solid var(--border-color);
+}
+
+.digest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.digest-date-range {
+  font-size: 12px;
+  color: var(--taupe-gray);
+  font-weight: 500;
+}
+
+.digest-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.digest-stat {
+  background: var(--sage-08);
+  padding: 12px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.digest-stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--botanical-sage);
+}
+
+.digest-stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--taupe-gray);
+}
+
+.digest-macros {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.digest-macro {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.04);
+  border-radius: 8px;
+}
+
+.macro-label {
+  font-size: 13px;
+  color: var(--deep-bark);
+  font-weight: 500;
+  flex: 1;
+}
+
+.macro-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--botanical-sage);
+  margin-right: 12px;
+}
+
+.macro-target {
+  font-size: 11px;
+  color: var(--taupe-gray);
+}
+
+.digest-streak {
+  text-align: center;
+  padding: 12px;
+  background: rgba(255, 152, 0, 0.1);
+  color: #e65100;
+  font-weight: 600;
+  font-size: 13px;
+  border-radius: 8px;
+}

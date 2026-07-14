@@ -29,9 +29,18 @@ import {
   updateUserGoals,
   getMealsByDateRange,
   uploadRoomSnap,
+  updateStreak,
+  getStreak,
+  saveTemplate,
+  getTemplates,
+  deleteTemplate,
+  incrementTemplateUseCount,
 } from './data/db.js';
 import { getSession, signInWithGoogle, signInWithApple, onAuthStateChange, signOut, signInWithEmail, signUpWithEmail } from './auth/auth.js';
 import { initRooms } from './rooms.js';
+import { startBarcodeScanner, stopBarcodeScanner, lookupBarcode } from './barcode-scanner.js';
+import { generateWeeklyDigest, renderDigestHtml } from './weekly-digest.js';
+import { exportPdfReport } from './pdf-export.js';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
@@ -176,6 +185,15 @@ async function enterApp(user) {
   
   // Initialize Rooms
   await initRooms(state, dom);
+
+  // Load and display streak
+  loadAndDisplayStreak();
+
+  // Load meal templates for quick log
+  loadAndDisplayTemplates();
+
+  // Load weekly digest (non-blocking)
+  loadWeeklyDigest();
 }
 
 function bindEvents() {
@@ -349,6 +367,9 @@ function bindEvents() {
 
   // Analytics dashboard events
   bindAnalyticsEvents();
+  bindSaveTemplateBtn();
+  bindBarcodeScanner();
+  bindPdfExport();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -798,6 +819,11 @@ async function handleLogMeal() {
     dom.logMealBtn.classList.add('success');
     dom.logMealBtn.innerHTML = '<span class="log-meal-icon">✓</span> Logged!';
 
+    // Update streak
+    updateStreak(state.user.id).then(streak => {
+      if (streak) displayStreak(streak);
+    });
+
     setTimeout(() => {
       dom.logMealBtn.classList.remove('success');
       dom.logMealBtn.innerHTML = '<span class="log-meal-icon">✓</span> Log This Meal';
@@ -1039,6 +1065,260 @@ async function registerSW() {
 
 // ── Boot ──
 init().catch(console.error);
+
+// ═══════════════════════════════════════════════════════════
+// STREAKS
+// ═══════════════════════════════════════════════════════════
+
+async function loadAndDisplayStreak() {
+  try {
+    const streak = await getStreak(state.user.id);
+    displayStreak(streak);
+  } catch (e) {
+    console.error('Streak load error:', e);
+  }
+}
+
+function displayStreak(streak) {
+  const badge = document.getElementById('streak-badge');
+  const countEl = document.getElementById('streak-count');
+  if (!badge || !countEl) return;
+
+  if (streak.current_streak > 0) {
+    badge.classList.remove('hidden');
+    countEl.textContent = streak.current_streak;
+    // Animate on update
+    badge.classList.add('streak-bounce');
+    setTimeout(() => badge.classList.remove('streak-bounce'), 600);
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// MEAL TEMPLATES (Quick Log)
+// ═══════════════════════════════════════════════════════════
+
+async function loadAndDisplayTemplates() {
+  try {
+    const templates = await getTemplates(state.user.id);
+    renderTemplates(templates);
+  } catch (e) {
+    console.error('Templates load error:', e);
+  }
+}
+
+function renderTemplates(templates) {
+  const section = document.getElementById('templates-section');
+  const list = document.getElementById('templates-list');
+  if (!section || !list) return;
+
+  if (!templates || templates.length === 0) {
+    section.classList.add('hidden');
+    return;
+  }
+
+  section.classList.remove('hidden');
+  list.innerHTML = '';
+
+  templates.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'template-card';
+    card.innerHTML = `
+      <div class="template-name">${escapeHtml(t.name)}</div>
+      <div class="template-cals">${t.total_calories} kcal</div>
+      <button class="template-delete-btn" data-id="${t.id}" aria-label="Delete template">✕</button>
+    `;
+    
+    // Quick log on tap
+    card.addEventListener('click', async (e) => {
+      if (e.target.closest('.template-delete-btn')) return;
+      try {
+        const items = typeof t.items === 'string' ? JSON.parse(t.items) : t.items;
+        await incrementTemplateUseCount(t.id);
+        await logMeal(
+          {
+            user_id: state.user.id,
+            image_url: null,
+            total_calories: t.total_calories,
+            total_protein: t.total_protein,
+            total_carbs: t.total_carbs,
+            total_fats: t.total_fats,
+            context: state.context?.mealContext || null,
+          },
+          items
+        );
+        showToast(`Logged "${t.name}" ✓`);
+        updateStreak(state.user.id).then(s => { if (s) displayStreak(s); });
+        loadAndDisplayTemplates(); // Refresh order
+      } catch (e) {
+        showToast('Failed to log template');
+      }
+    });
+
+    // Delete button
+    const delBtn = card.querySelector('.template-delete-btn');
+    delBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      try {
+        await deleteTemplate(t.id);
+        showToast('Template deleted');
+        loadAndDisplayTemplates();
+      } catch (err) {
+        showToast('Failed to delete template');
+      }
+    });
+
+    list.appendChild(card);
+  });
+}
+
+function bindSaveTemplateBtn() {
+  const btn = document.getElementById('save-template-btn');
+  if (!btn) return;
+  btn.addEventListener('click', async () => {
+    if (state.currentItems.length === 0) {
+      showToast('Scan a meal first!');
+      return;
+    }
+    // Auto-generate name from food items
+    const autoName = state.currentItems
+      .map(i => i.food_name || i.food_name_logged)
+      .filter(Boolean)
+      .slice(0, 3)
+      .join(' + ');
+
+    const totals = state.currentItems.reduce(
+      (acc, item) => ({
+        calories: acc.calories + (item.calories || 0),
+        protein: acc.protein + (item.protein || 0),
+        carbs: acc.carbs + (item.carbs || 0),
+        fats: acc.fats + (item.fats || 0),
+      }),
+      { calories: 0, protein: 0, carbs: 0, fats: 0 }
+    );
+
+    try {
+      await saveTemplate(state.user.id, autoName || 'My Meal', state.currentItems, totals);
+      showToast('Saved as template! 📋');
+      loadAndDisplayTemplates();
+    } catch (e) {
+      showToast('Failed to save template');
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// BARCODE SCANNER
+// ═══════════════════════════════════════════════════════════
+
+function bindBarcodeScanner() {
+  const btn = document.getElementById('btn-barcode-scan');
+  if (!btn) return;
+
+  btn.addEventListener('click', async () => {
+    dom.cameraPlaceholder.classList.add('hidden');
+    dom.cameraStream.classList.remove('hidden');
+    if (dom.btnCloseCamera) dom.btnCloseCamera.classList.remove('hidden');
+
+    showToast('Point camera at a barcode...');
+
+    const started = await startBarcodeScanner(
+      dom.cameraStream,
+      async (code) => {
+        // Barcode detected
+        showToast('Barcode found! Looking up...');
+        dom.processingOverlay?.classList.remove('hidden');
+
+        const product = await lookupBarcode(code);
+        dom.processingOverlay?.classList.add('hidden');
+        
+        // Stop camera
+        dom.cameraStream.classList.add('hidden');
+        if (dom.btnCloseCamera) dom.btnCloseCamera.classList.add('hidden');
+        dom.cameraPlaceholder.classList.remove('hidden');
+
+        if (product) {
+          state.currentItems = [product];
+          renderFoodItems(state.currentItems);
+          showAnalyticsPanel();
+          showToast(`Found: ${product.food_name}`);
+        } else {
+          showToast('Product not found. Try scanning with camera instead.');
+        }
+      },
+      (error) => {
+        // Error / not supported
+        dom.cameraStream.classList.add('hidden');
+        if (dom.btnCloseCamera) dom.btnCloseCamera.classList.add('hidden');
+        dom.cameraPlaceholder.classList.remove('hidden');
+        showToast(error);
+      }
+    );
+
+    if (!started) {
+      dom.cameraStream.classList.add('hidden');
+      if (dom.btnCloseCamera) dom.btnCloseCamera.classList.add('hidden');
+      dom.cameraPlaceholder.classList.remove('hidden');
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// WEEKLY DIGEST
+// ═══════════════════════════════════════════════════════════
+
+async function loadWeeklyDigest() {
+  try {
+    const digest = await generateWeeklyDigest(state.user.id, state.user);
+    if (digest.totalMeals === 0) return; // Nothing to show
+    
+    const card = document.getElementById('weekly-digest-card');
+    const dateRange = document.getElementById('digest-date-range');
+    const body = document.getElementById('digest-body');
+    if (!card || !body) return;
+
+    dateRange.textContent = `${digest.dateRange.start} — ${digest.dateRange.end}`;
+    body.innerHTML = renderDigestHtml(digest);
+    card.classList.remove('hidden');
+  } catch (e) {
+    console.error('Digest error:', e);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// PDF EXPORT
+// ═══════════════════════════════════════════════════════════
+
+function bindPdfExport() {
+  const btn = document.getElementById('btn-export-pdf');
+  if (!btn) return;
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    btn.textContent = 'Generating PDF...';
+    try {
+      const userName = state.user?.email || 'User';
+      const days = state.analyticsRange || 7;
+      await exportPdfReport(userName, state.user, state.user.id, days);
+      showToast('PDF downloaded! 📄');
+    } catch (e) {
+      console.error('PDF export error:', e);
+      showToast('Failed to generate PDF');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="margin-right: 6px;">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        Export PDF Report
+      `;
+    }
+  });
+}
 
 // ═══════════════════════════════════════════════════════════
 // ANALYTICS DASHBOARD

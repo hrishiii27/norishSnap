@@ -8,7 +8,25 @@ CREATE TABLE users (
     daily_calorie_target INT DEFAULT 2000,
     protein_target_g INT DEFAULT 120,
     carbs_target_g INT DEFAULT 200,
-    fats_target_g INT DEFAULT 60
+    fats_target_g INT DEFAULT 60,
+    -- Streaks
+    current_streak INT DEFAULT 0,
+    longest_streak INT DEFAULT 0,
+    last_logged_date DATE
+);
+
+-- Meal Templates (Quick Log)
+CREATE TABLE meal_templates (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    items JSONB NOT NULL,
+    total_calories INT,
+    total_protein NUMERIC(5,2),
+    total_carbs NUMERIC(5,2),
+    total_fats NUMERIC(5,2),
+    use_count INT DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE food_reference_dictionary (
@@ -120,6 +138,11 @@ FOR SELECT USING (
 
 -- 5. Policies for user_smart_revision_memory
 CREATE POLICY "Users can manage their own revision memory" ON user_smart_revision_memory
+FOR ALL USING (auth.uid() = user_id);
+
+-- 6. Policies for meal_templates
+ALTER TABLE meal_templates ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users own their templates" ON meal_templates
 FOR ALL USING (auth.uid() = user_id);
 
 -- ==========================================

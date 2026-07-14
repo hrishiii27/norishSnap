@@ -529,6 +529,126 @@ export async function getMealsByDateRange(userId, startDate, endDate) {
   });
 }
 
+// ── Streaks API ──
+
+export async function updateStreak(userId) {
+  if (!supabase) return null;
+  
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD local
+  
+  // Get current user streak data
+  const { data: user, error: fetchErr } = await supabase
+    .from('users')
+    .select('current_streak, longest_streak, last_logged_date')
+    .eq('id', userId)
+    .maybeSingle();
+  if (fetchErr || !user) return null;
+  
+  const lastDate = user.last_logged_date;
+  
+  if (lastDate === today) {
+    // Already logged today — no change
+    return { current_streak: user.current_streak, longest_streak: user.longest_streak };
+  }
+  
+  let newStreak;
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().split('T')[0];
+  
+  if (lastDate === yesterdayStr) {
+    // Consecutive day
+    newStreak = (user.current_streak || 0) + 1;
+  } else {
+    // Streak broken
+    newStreak = 1;
+  }
+  
+  const newLongest = Math.max(newStreak, user.longest_streak || 0);
+  
+  const { error: updateErr } = await supabase
+    .from('users')
+    .update({ current_streak: newStreak, longest_streak: newLongest, last_logged_date: today })
+    .eq('id', userId);
+  if (updateErr) console.error('Streak update error:', updateErr);
+  
+  return { current_streak: newStreak, longest_streak: newLongest };
+}
+
+export async function getStreak(userId) {
+  if (!supabase) return { current_streak: 0, longest_streak: 0 };
+  const { data, error } = await supabase
+    .from('users')
+    .select('current_streak, longest_streak, last_logged_date')
+    .eq('id', userId)
+    .maybeSingle();
+  if (error || !data) return { current_streak: 0, longest_streak: 0 };
+  
+  // Check if streak is still valid (last_logged_date was today or yesterday)
+  const today = new Date().toISOString().split('T')[0];
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().split('T')[0];
+  
+  if (data.last_logged_date !== today && data.last_logged_date !== yesterdayStr) {
+    return { current_streak: 0, longest_streak: data.longest_streak || 0 };
+  }
+  return { current_streak: data.current_streak || 0, longest_streak: data.longest_streak || 0 };
+}
+
+// ── Meal Templates API ──
+
+export async function saveTemplate(userId, name, items, totals) {
+  if (!supabase) return null;
+  const { error } = await supabase
+    .from('meal_templates')
+    .insert({
+      user_id: userId,
+      name,
+      items: JSON.stringify(items),
+      total_calories: totals.calories,
+      total_protein: totals.protein,
+      total_carbs: totals.carbs,
+      total_fats: totals.fats,
+    });
+  if (error) throw error;
+}
+
+export async function getTemplates(userId) {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from('meal_templates')
+    .select('*')
+    .eq('user_id', userId)
+    .order('use_count', { ascending: false })
+    .limit(10);
+  if (error) return [];
+  return data || [];
+}
+
+export async function deleteTemplate(templateId) {
+  if (!supabase) return;
+  const { error } = await supabase
+    .from('meal_templates')
+    .delete()
+    .eq('id', templateId);
+  if (error) throw error;
+}
+
+export async function incrementTemplateUseCount(templateId) {
+  if (!supabase) return;
+  // RPC would be ideal but we can do a read-then-write
+  const { data } = await supabase
+    .from('meal_templates')
+    .select('use_count')
+    .eq('id', templateId)
+    .maybeSingle();
+  await supabase
+    .from('meal_templates')
+    .update({ use_count: (data?.use_count || 0) + 1 })
+    .eq('id', templateId);
+}
+
 // ── Rooms Feature API ──
 
 export async function createRoom(hostId, roomName) {
